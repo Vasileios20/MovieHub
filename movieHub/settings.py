@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['moviehub-vas.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['moviehub-vas-2ed6679610a9.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "django.contrib.staticfiles",
     "cloudinary",
-    "movieHub",
+    "home",
 ]
 
 MIDDLEWARE = [
