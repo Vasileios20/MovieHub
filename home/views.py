@@ -1,7 +1,7 @@
 from django.shortcuts import render
-
 import requests
 import os
+
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
