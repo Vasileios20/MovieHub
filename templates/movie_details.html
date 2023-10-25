@@ -21,6 +21,7 @@ Results
       <p class="card-text">Vote count: {{ data.vote_count }}</p>
       <p class="card-text">Duration(min): {{ data.runtime }}</p>
       <div class="card-text">Genres: {{ genres }}</div>
+      <a href="{% url 'add_favourites' data.id %}" class="btn btn-primary">Add to favourites</a>
     </div>
   </div>
 </div>

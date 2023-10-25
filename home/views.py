@@ -1,4 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from .models import Favourites
 import requests
 import os
 
@@ -94,3 +95,12 @@ def movie_details(request, movie_id):
 
     # render the movie details page with the data from the API
     return render(request, "movie_details.html", context)
+
+
+def add_favourites(request, movie_id):
+    """ A view to add a favourite to a movie """
+    user = request.user
+
+    Favourites(user=user, movie_id=movie_id).save()
+
+    return redirect(f"/search_results/{movie_id}/")
