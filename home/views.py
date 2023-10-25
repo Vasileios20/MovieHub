@@ -58,3 +58,39 @@ def search(request):
     }
 
     return render(request, "search_results.html", context)
+
+
+def movie_details(request, movie_id):
+    """A view to return the movie details page"""
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+    # get the genres and cast from the API
+    genres_list = []
+    for genre in data["genres"]:
+        genres_list.append(genre["name"])
+    genres = ", ".join([str(elem) for elem in genres_list])
+    url_cast = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
+    response_cast = requests.get(url_cast)
+    data_cast = response_cast.json()
+    # sort the cast by popularity
+    temp_cast_list = []
+    for cast in data_cast['cast']:
+        temp_cast_list.append(
+            {"name": cast['name'], "popularity": cast['popularity']})
+    sorted_cast_list = sorted(temp_cast_list, key=lambda d: d['popularity'],
+                              reverse=True)
+    cast_list = []
+    for name in sorted_cast_list:
+        cast_list.append(name['name'])
+
+    cast = ", ".join([str(elem) for elem in cast_list])
+
+    context = {
+        "data": data,
+        "genres": genres,
+        "cast": cast,
+    }
+
+    # render the movie details page with the data from the API
+    return render(request, "movie_details.html", context)

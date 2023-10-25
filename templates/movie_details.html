@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Results
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="h1">{{ data.title }}</h1>
+  <div class="row">
+    <div class="col-4">
+      <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="280" height="150"
+        alt="...">
+    </div>
+    <div class="col-8">
+      <h5 class="h5">Release date: {{ data.release_date }}</h5>
+      <p class="card-text">Overview: {{ data.overview }}</p>
+      <p tabindex="0" class="card-text border" data-toggle="popover" data-trigger="focus" title="Cast"
+        data-content="{{ cast }}" style="cursor: pointer; width: fit-content;">Click to see cast members</p>
+      <p class="card-text">Rating: {{ data.vote_average }}</p>
+      <p class="card-text">Vote count: {{ data.vote_count }}</p>
+      <p class="card-text">Duration(min): {{ data.runtime }}</p>
+      <div class="card-text">Genres: {{ genres }}</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
