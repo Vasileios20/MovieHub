@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% load static %}
+{% extends "base.html" %}
 
 {% block title %}
 Results
@@ -22,7 +22,7 @@ Results
         <div class="card-body">
           <h5 class="card-title">{{ res.title }}</h5>
           <p class="card-text">{{ res.release_date }}</p>
-          <a href="#" class="btn btn-primary">View details</a>
+          <a href="/search_results/{{ res.movie_id }}/" class="btn btn-primary">View details</a>
         </div>
       </div>
     </div>

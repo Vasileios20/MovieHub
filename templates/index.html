@@ -8,15 +8,15 @@ Home
 
 <div class="container">
     {% for movie in movies_list %}
-    <div class="row">
+    <div class="row align-items-center">
         {% for m in movie|slice:":4" %}
-        <div class="col-3">
+        <div class="col-sm mt-3">
             <div class="card">
                 <img src="https://image.tmdb.org/t/p/w500/{{ m.poster_path }}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ m.title }}</h5>
                     <p class="card-text">{{ m.release_date }}</p>
-                    <a href="#" class="btn btn-primary">View details</a>
+                    <a href="/search_results/{{ m.movie_id }}/" class="btn btn-primary">View details</a>
                 </div>
             </div>
         </div>
