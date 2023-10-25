@@ -119,17 +119,16 @@ def add_favourites(request, movie_id):
 
 def view_favourites(request):
     """ A view to return the favourites page """
-    favourites = Favourites.objects.all()
+    favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
     fav_list = []
-
+    
     for movie_id in fav_movies:
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
         response = requests.get(url)
         data = response.json()
         fav_list.append(data)
-
-    genres = genre(request, data, movie_id)
+        genres = genre(request, data, movie_id)
 
     if not fav_list:
         return render(request, "favourites.html",
