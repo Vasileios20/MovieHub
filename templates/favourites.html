@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+Results
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    {% for fav in fav_list %}
+    <div class="card" style="width: 15rem; margin: 5px;">
+      <img src="https://image.tmdb.org/t/p/w500/{{ fav.poster_path }}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{ fav.title }}</h5>
+        <div class="card-text">Genres: {{ genres }}</div>
+        <a href="/search_results/{{ fav.id }}/" class="btn btn-primary">View details</a>
+        <a href="#" class="btn btn-danger">Remove from favourites</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

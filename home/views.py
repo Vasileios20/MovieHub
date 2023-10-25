@@ -23,9 +23,11 @@ def index(request):
              "release_date": result["release_date"],
              "movie_id": result["id"]})
     movies_list.append(temp) if len(temp) > 0 else None
+    genres = genre(request, results, result["id"])
 
     context = {
         "movies_list": movies_list,
+        "genres": genres,
     }
     return render(request, "index.html", context)
 
@@ -61,29 +63,38 @@ def search(request):
     return render(request, "search_results.html", context)
 
 
+def genre(request, data, movie_id):
+    """A view to return the movie genres"""
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+    genres_list = []
+    for genre in data["genres"]:
+        genres_list.append(genre["name"])
+    genres = ", ".join([str(elem) for elem in genres_list])
+    return genres
+
+
 def movie_details(request, movie_id):
     """A view to return the movie details page"""
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
     response = requests.get(url)
     data = response.json()
-    # get the genres and cast from the API
-    genres_list = []
-    for genre in data["genres"]:
-        genres_list.append(genre["name"])
-    genres = ", ".join([str(elem) for elem in genres_list])
+    genres = genre(request, data, movie_id)
+
     url_cast = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
     response_cast = requests.get(url_cast)
     data_cast = response_cast.json()
     # sort the cast by popularity
     temp_cast_list = []
-    for cast in data_cast['cast']:
+    for cast in data_cast["cast"]:
         temp_cast_list.append(
-            {"name": cast['name'], "popularity": cast['popularity']})
-    sorted_cast_list = sorted(temp_cast_list, key=lambda d: d['popularity'],
+            {"name": cast["name"], "popularity": cast["popularity"]})
+    sorted_cast_list = sorted(temp_cast_list, key=lambda d: d["popularity"],
                               reverse=True)
     cast_list = []
     for name in sorted_cast_list:
-        cast_list.append(name['name'])
+        cast_list.append(name["name"])
 
     cast = ", ".join([str(elem) for elem in cast_list])
 
@@ -104,3 +115,31 @@ def add_favourites(request, movie_id):
     Favourites(user=user, movie_id=movie_id).save()
 
     return redirect(f"/search_results/{movie_id}/")
+
+
+def view_favourites(request):
+    """ A view to return the favourites page """
+    favourites = Favourites.objects.all()
+    fav_movies = favourites.values_list("movie_id", flat=True)
+    fav_list = []
+
+    for movie_id in fav_movies:
+        url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+        fav_list.append(data)
+
+    genres = genre(request, data, movie_id)
+
+    if not fav_list:
+        return render(request, "favourites.html",
+                      {"empty_list": "Your list is empty"
+                       }
+                      )
+    else:
+        return render(request,
+                      "favourites.html",
+                      {"fav_list": fav_list,
+                       "genres": genres,
+                       }
+                      )
