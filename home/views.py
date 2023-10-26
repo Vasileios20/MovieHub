@@ -75,13 +75,7 @@ def genre(request, data, movie_id):
     return genres
 
 
-def movie_details(request, movie_id):
-    """A view to return the movie details page"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
-    response = requests.get(url)
-    data = response.json()
-    genres = genre(request, data, movie_id)
-
+def cast_list(request, data, movie_id):
     url_cast = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
     response_cast = requests.get(url_cast)
     data_cast = response_cast.json()
@@ -97,6 +91,15 @@ def movie_details(request, movie_id):
         cast_list.append(name["name"])
 
     cast = ", ".join([str(elem) for elem in cast_list])
+    return cast
+
+def movie_details(request, movie_id):
+    """A view to return the movie details page"""
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+    genres = genre(request, data, movie_id)
+    cast = cast_list(request, data, movie_id)
 
     context = {
         "data": data,
@@ -142,3 +145,5 @@ def view_favourites(request):
                        "genres": genres,
                        }
                       )
+
+
