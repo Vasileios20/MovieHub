@@ -12,7 +12,6 @@ Results
       <img src="https://image.tmdb.org/t/p/w500/{{ fav.poster_path }}" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{ fav.title }}</h5>
-        <div class="card-text">Genres: {{ genres }}</div>
         <a href="/search_results/{{ fav.id }}/" class="btn btn-outline-primary mt-2">View details</a>
         <a href="{% url 'add_favourites' fav.id %}" class="btn btn-outline-danger mt-2">Remove from favourites</a>
       </div>

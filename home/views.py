@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .models import Favourites
+from .movie_details import genre, cast_list, release_date
 import requests
 import os
 
@@ -17,17 +18,18 @@ def index(request):
     results = data["results"]
     temp = []
     for result in results:
+        release_date_new = release_date(request, result["id"])
+        genres = genre(request, result["id"])
         temp.append(
             {"title": result["title"], "overview": result["overview"],
              "poster_path": result["poster_path"],
-             "release_date": result["release_date"],
+             "release_date": release_date_new,
+             "genres": genres,
              "movie_id": result["id"]})
     movies_list.append(temp) if len(temp) > 0 else None
-    genres = genre(request, results, result["id"])
 
     context = {
         "movies_list": movies_list,
-        "genres": genres,
     }
     return render(request, "index.html", context)
 
@@ -45,10 +47,13 @@ def search(request):
 
         temp = []
         for result in results:
+            release_date_new = release_date(request, result["id"])
+            genres = genre(request, result["id"])
             temp.append(
                 {"title": result["title"],
                  "poster_path": result["poster_path"],
-                 "release_date": result["release_date"],
+                 "release_date": release_date_new,
+                 "genres": genres,
                  "movie_id": result["id"]})
 
         movies_list.append(temp) if len(temp) > 0 else None
@@ -63,44 +68,14 @@ def search(request):
     return render(request, "search_results.html", context)
 
 
-def genre(request, data, movie_id):
-    """A view to return the movie genres"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
-    response = requests.get(url)
-    data = response.json()
-    genres_list = []
-    for genre in data["genres"]:
-        genres_list.append(genre["name"])
-    genres = ", ".join([str(elem) for elem in genres_list])
-    return genres
-
-
-def cast_list(request, data, movie_id):
-    url_cast = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
-    response_cast = requests.get(url_cast)
-    data_cast = response_cast.json()
-    # sort the cast by popularity
-    temp_cast_list = []
-    for cast in data_cast["cast"]:
-        temp_cast_list.append(
-            {"name": cast["name"], "popularity": cast["popularity"]})
-    sorted_cast_list = sorted(temp_cast_list, key=lambda d: d["popularity"],
-                              reverse=True)
-    cast_list = []
-    for name in sorted_cast_list:
-        cast_list.append(name["name"])
-
-    cast = ", ".join([str(elem) for elem in cast_list])
-    return cast
-
-
 def movie_details(request, movie_id):
     """A view to return the movie details page"""
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
     response = requests.get(url)
     data = response.json()
-    genres = genre(request, data, movie_id)
-    cast = cast_list(request, data, movie_id)
+    genres = genre(request, movie_id)
+    cast = cast_list(request, movie_id)
+    release_date_new = release_date(request, data["id"])
 
     # check if the user is logged in
     user = request.user
@@ -109,6 +84,7 @@ def movie_details(request, movie_id):
             "data": data,
             "genres": genres,
             "cast": cast,
+            "release_date": release_date_new,
         })
     else:
         # check if the movie is already in the favourites list
@@ -121,6 +97,7 @@ def movie_details(request, movie_id):
             "data": data,
             "genres": genres,
             "cast": cast,
+            "release_date": release_date_new,
             "fav": fav,
         }
 
@@ -153,8 +130,7 @@ def view_favourites(request):
         response = requests.get(url)
         data = response.json()
         fav_list.append(data)
-        genres = genre(request, data, movie_id)
-
+    
     if not fav_list:
         return render(request, "favourites.html",
                       {"empty_list": "Your list is empty"
@@ -164,6 +140,5 @@ def view_favourites(request):
         return render(request,
                       "favourites.html",
                       {"fav_list": fav_list,
-                       "genres": genres,
                        }
                       )
