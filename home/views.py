@@ -102,10 +102,18 @@ def movie_details(request, movie_id):
     genres = genre(request, data, movie_id)
     cast = cast_list(request, data, movie_id)
 
+    # check if the movie is already in the favourites list
+    user = request.user
+    fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
+    fav = bool
+    if fav_id.exists():
+        fav = True
+
     context = {
         "data": data,
         "genres": genres,
         "cast": cast,
+        "fav": fav,
     }
 
     # render the movie details page with the data from the API
@@ -122,7 +130,7 @@ def add_favourites(request, movie_id):
         return redirect("/favourites/")
     else:
         Favourites(user=user, movie_id=movie_id).save()
-
+    print(f"User:{user}, Movie ID:{movie_id}")
     return redirect(f"/search_results/{movie_id}/")
 
 
