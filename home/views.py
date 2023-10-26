@@ -93,6 +93,7 @@ def cast_list(request, data, movie_id):
     cast = ", ".join([str(elem) for elem in cast_list])
     return cast
 
+
 def movie_details(request, movie_id):
     """A view to return the movie details page"""
     url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
@@ -114,8 +115,13 @@ def movie_details(request, movie_id):
 def add_favourites(request, movie_id):
     """ A view to add a favourite to a movie """
     user = request.user
+    fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
 
-    Favourites(user=user, movie_id=movie_id).save()
+    if fav_id.exists():
+        fav_id.delete()
+        return redirect("/favourites/")
+    else:
+        Favourites(user=user, movie_id=movie_id).save()
 
     return redirect(f"/search_results/{movie_id}/")
 
@@ -125,7 +131,7 @@ def view_favourites(request):
     favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
     fav_list = []
-    
+
     for movie_id in fav_movies:
         url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
         response = requests.get(url)
@@ -145,5 +151,3 @@ def view_favourites(request):
                        "genres": genres,
                        }
                       )
-
-
