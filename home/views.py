@@ -102,22 +102,30 @@ def movie_details(request, movie_id):
     genres = genre(request, data, movie_id)
     cast = cast_list(request, data, movie_id)
 
-    # check if the movie is already in the favourites list
+    # check if the user is logged in
     user = request.user
-    fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
-    fav = bool
-    if fav_id.exists():
-        fav = True
+    if not user.is_authenticated:
+        return render(request, "movie_details.html", {
+            "data": data,
+            "genres": genres,
+            "cast": cast,
+        })
+    else:
+        # check if the movie is already in the favourites list
+        fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
+        fav = bool
+        if fav_id.exists():
+            fav = True
 
-    context = {
-        "data": data,
-        "genres": genres,
-        "cast": cast,
-        "fav": fav,
-    }
+        context = {
+            "data": data,
+            "genres": genres,
+            "cast": cast,
+            "fav": fav,
+        }
 
-    # render the movie details page with the data from the API
-    return render(request, "movie_details.html", context)
+        # render the movie details page with the data from the API
+        return render(request, "movie_details.html", context)
 
 
 def add_favourites(request, movie_id):
