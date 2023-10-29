@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .models import Favourites
 from .movie_details import genre, cast_list, release_date
+from django.contrib import messages
 import requests
 import os
 
@@ -112,10 +113,13 @@ def add_favourites(request, movie_id):
 
     if fav_id.exists():
         fav_id.delete()
+        messages.add_message(request, messages.ERROR,
+                             "Removed from favourites")
         return redirect("/favourites/")
     else:
         Favourites(user=user, movie_id=movie_id).save()
-    print(f"User:{user}, Movie ID:{movie_id}")
+        messages.add_message(request, messages.SUCCESS,
+                             "Added to favourites")
     return redirect(f"/search_results/{movie_id}/")
 
 
@@ -130,7 +134,7 @@ def view_favourites(request):
         response = requests.get(url)
         data = response.json()
         fav_list.append(data)
-    
+
     if not fav_list:
         return render(request, "favourites.html",
                       {"empty_list": "Your list is empty"
