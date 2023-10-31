@@ -9,6 +9,12 @@ $(document).ready(function () {
     deleteModal.show();
   });
 
+  $("#form-placeholder").on('click', function () {
+    $("#form-placeholder").addClass("d-none");
+    $("#form-ckeditor").addClass("d-block");
+    
+  });
+
   setTimeout(function () {
     let messages = document.getElementById("msg");
     let alert = new bootstrap.Alert(messages);

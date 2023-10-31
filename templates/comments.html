@@ -22,5 +22,37 @@ Comments
         </div>
     </div>
 </div>
+<div class="container mt-3">
+    <div class="row">
+
+        <div class="col-12 p-2 bg-light">
+            {% if commented %}
+            <div class="alert alert-success" role="alert">
+                Your comment is awaiting approval
+            </div>
+            {% else %}
+            {% if user.is_authenticated %}
+            <p class="d-inline mr-3 text-">Posting as: {{ user.username }}</p>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group  " id="form-placeholder">
+                    <label for="comment"></label>
+                    <textarea class="form-control" name="comment" id="comment" cols="5" rows="2"
+                        placeholder="Leave a comment"></textarea>
+                </div>
+                <div class="form-group d-none" id="form-ckeditor">
+                    {{ form.media }}
+                    {{ form.as_p }}
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary float-right mr-3">Submit</button>
+                </div>
+            </form>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

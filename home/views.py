@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import Favourites
 from .movie_details import genre, cast_list, release_date
 from django.contrib import messages
+from .forms import CommentForm
 import requests
 import os
 
@@ -156,10 +157,32 @@ def comment_movie(request, movie_id):
     genres = genre(request, movie_id)
     cast = cast_list(request, movie_id)
     release_date_new = release_date(request, data["id"])
-    
-    return render(request, "comments.html", {
-        "data": data,
-        "genres": genres,
-        "release_date": release_date_new,
-        "cast": cast,
-    })
+
+    comment_form = CommentForm(data=request.POST)
+
+    if request.method == 'POST':
+
+        if comment_form.is_valid():
+            comment_form.instance.user = request.user
+            comment = comment_form.save(commit=False)
+            comment.movie_id = movie_id
+            comment.save()
+            messages.success(request, 'Comment added successfully')
+        else:
+            comment_form = CommentForm()
+
+        return render(request, "comments.html", {
+            "data": data,
+            "genres": genres,
+            "release_date": release_date_new,
+            "cast": cast,
+            "form": CommentForm(),
+        })
+    else:
+        return render(request, "comments.html", {
+            "data": data,
+            "genres": genres,
+            "release_date": release_date_new,
+            "cast": cast,
+            "form": CommentForm(),
+        })
