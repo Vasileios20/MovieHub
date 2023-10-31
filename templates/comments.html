@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Comments
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center">{{ data.title }}</h1>
+    <div class="row">
+        <div class="col-3">
+            <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="200" height="100"
+                alt="...">
+        </div>
+        <div class="col-8">
+            <h5 class="h5">Release date: {{ release_date }}</h5>
+            <p class="card-text">Overview: {{ data.overview }}</p>
+            <p class="card-text">Genres: {{ genres }}</p>
+            <p class="card-text">Rating: </p>
+            <p class="card-text">Vote count: </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

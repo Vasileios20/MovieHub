@@ -146,3 +146,20 @@ def view_favourites(request):
                       {"fav_list": fav_list,
                        }
                       )
+
+
+def comment_movie(request, movie_id):
+    """ A view to add a comment to a movie """
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+    genres = genre(request, movie_id)
+    cast = cast_list(request, movie_id)
+    release_date_new = release_date(request, data["id"])
+    
+    return render(request, "comments.html", {
+        "data": data,
+        "genres": genres,
+        "release_date": release_date_new,
+        "cast": cast,
+    })

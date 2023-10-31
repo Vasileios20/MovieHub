@@ -9,8 +9,17 @@ Results
   <h1 class="h1">{{ data.title }}</h1>
   <div class="row">
     <div class="col-4">
-      <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="280" height="150"
+      <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="380" height="200"
         alt="...">
+      <a href="{% url 'comment_movie' data.id %}" class="btn btn-dark mt-2">Comments <i
+          class="fa-regular fa-comments"></i></a>
+      {% if user.is_authenticated %}
+      {% if fav %}
+      <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
+      {% else %}
+      <a href="{% url 'add_favourites' data.id %}" class="btn btn-success">Add to favourites</a>
+      {% endif %}
+      {% endif %}
     </div>
     <div class="col-8">
       <h5 class="h5">Release date: {{ release_date }}</h5>
@@ -20,14 +29,7 @@ Results
       <p class="card-text">Rating: {{ data.vote_average }}</p>
       <p class="card-text">Vote count: {{ data.vote_count }}</p>
       <p class="card-text">Duration(min): {{ data.runtime }}</p>
-      <div class="card-text">Genres: {{ genres }}</div>
-      {% if user.is_authenticated %}
-      {% if fav %}
-      <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
-      {% else %}
-      <a href="{% url 'add_favourites' data.id %}" class="btn btn-success">Add to favourites</a>
-      {% endif %}
-      {% endif %}
+      <p class="card-text">Genres: {{ genres }}</p>
     </div>
   </div>
 </div>
