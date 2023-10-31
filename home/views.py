@@ -3,6 +3,7 @@ from .models import Favourites, Comment
 from .movie_details import genre, cast_list, release_date
 from django.contrib import messages
 from .forms import CommentForm
+from django.core.paginator import Paginator
 import requests
 import os
 
@@ -159,6 +160,9 @@ def comment_movie(request, movie_id):
     release_date_new = release_date(request, data["id"])
 
     comments = Comment.objects.filter(movie_id=movie_id, approved=True)
+    paginator = Paginator(comments, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     comment_count = Comment.objects.filter(
         movie_id=movie_id, approved=True).count()
 
@@ -183,6 +187,7 @@ def comment_movie(request, movie_id):
             "comment_count": comment_count,
             "comments": comments,
             "commented": True,
+            "page_obj": page_obj,
             "form": CommentForm(),
         })
     else:
@@ -194,5 +199,6 @@ def comment_movie(request, movie_id):
             "comment_count": comment_count,
             "comments": comments,
             "commented": False,
+            "page_obj": page_obj,
             "form": CommentForm(),
         })

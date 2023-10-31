@@ -65,7 +65,7 @@ Comments
         </div>
     </div>
     <div class="col-12 mt-1">
-        {% for comment in comments %}
+        {% for comment in page_obj %}
         <div class="comments{% if not comment.approved and comment.user == user.username %} faded{% elif not comment.approved %} d-none{% endif %}"
             style="padding: 10px;">
             <div class="card shadow">
@@ -78,6 +78,26 @@ Comments
         </div>
         {% endfor %}
     </div>
+    <nav aria-label="Comments pages" class="pb-4 mt-2 mb-1">
+        <ul class="pagination justify-content-center mt-4">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for page in page_obj.paginator.page_range %}
+
+            <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 
 
