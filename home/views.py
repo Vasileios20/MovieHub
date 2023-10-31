@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import Favourites
+from .models import Favourites, Comment
 from .movie_details import genre, cast_list, release_date
 from django.contrib import messages
 from .forms import CommentForm
@@ -158,6 +158,10 @@ def comment_movie(request, movie_id):
     cast = cast_list(request, movie_id)
     release_date_new = release_date(request, data["id"])
 
+    comments = Comment.objects.filter(movie_id=movie_id, approved=True)
+    comment_count = Comment.objects.filter(
+        movie_id=movie_id, approved=True).count()
+
     comment_form = CommentForm(data=request.POST)
 
     if request.method == 'POST':
@@ -176,6 +180,9 @@ def comment_movie(request, movie_id):
             "genres": genres,
             "release_date": release_date_new,
             "cast": cast,
+            "comment_count": comment_count,
+            "comments": comments,
+            "commented": True,
             "form": CommentForm(),
         })
     else:
@@ -184,5 +191,8 @@ def comment_movie(request, movie_id):
             "genres": genres,
             "release_date": release_date_new,
             "cast": cast,
+            "comment_count": comment_count,
+            "comments": comments,
+            "commented": False,
             "form": CommentForm(),
         })
