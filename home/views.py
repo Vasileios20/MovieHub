@@ -189,12 +189,9 @@ def view_favourites(request):
 
 def comment_movie(request, movie_id):
     """ A view to add a comment to a movie """
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
-    response = requests.get(url)
-    data = response.json()
-    genres = genre(request, movie_id)
-    cast = cast_list(request, movie_id)
-    release_date_new = release_date(request, data["id"])
+    movie = Movie.objects.filter(id=movie_id).values()
+    for m in movie:
+        data = movie_model(m['movie_id'])
 
     comments = Comment.objects.filter(movie_id=movie_id, approved=True)
     paginator = Paginator(comments, 10)
@@ -203,39 +200,28 @@ def comment_movie(request, movie_id):
     comment_count = Comment.objects.filter(
         movie_id=movie_id, approved=True).count()
 
-    comment_form = CommentForm(data=request.POST)
+    comment_form = CommentForm()
+    commented = False
 
     if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        commented = True
 
         if comment_form.is_valid():
             comment_form.instance.user = request.user
             comment = comment_form.save(commit=False)
-            comment.movie_id = movie_id
+            comment.movie_id = Movie.objects.get(id=movie_id)
             comment.save()
             messages.success(request, 'Comment added successfully')
-        else:
-            comment_form = CommentForm()
+            return redirect(
+                'comment_movie', movie_id
+            )
 
-        return render(request, "comments.html", {
-            "data": data,
-            "genres": genres,
-            "release_date": release_date_new,
-            "cast": cast,
-            "comment_count": comment_count,
-            "comments": comments,
-            "commented": True,
-            "page_obj": page_obj,
-            "form": CommentForm(),
-        })
-    else:
-        return render(request, "comments.html", {
-            "data": data,
-            "genres": genres,
-            "release_date": release_date_new,
-            "cast": cast,
-            "comment_count": comment_count,
-            "comments": comments,
-            "commented": False,
-            "page_obj": page_obj,
-            "form": CommentForm(),
-        })
+    return render(request, "comments.html", {
+        "data": data,
+        "comment_count": comment_count,
+        "comments": comments,
+        "commented": commented,
+        "page_obj": page_obj,
+        "form": comment_form,
+    })

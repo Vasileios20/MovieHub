@@ -13,7 +13,7 @@ class Favourites(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.IntegerField()
+    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE)
     comment = RichTextField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)

@@ -26,7 +26,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
-    list_display = ('movie_id', 'title', 'overview', 'poster_path',
+    list_display = ('id', 'movie_id', 'title', 'overview', 'poster_path',
                     'release_date', 'genres', 'cast', 'revenue', 'runtime',
                     'budget', 'popularity', 'homepage', 'production_companies',
                     'production_countries', 'spoken_languages', 'vote_average',

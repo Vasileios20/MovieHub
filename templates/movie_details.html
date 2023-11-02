@@ -11,7 +11,7 @@ Results
     <div class="col-4">
       <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="380" height="200"
         alt="...">
-      <a href="#" class="btn btn-dark mt-2">Comments <i class="fa-regular fa-comments"></i></a>
+      <a href="{% url 'comment_movie' data.movie_id %}" class="btn btn-dark mt-2">Comments <i class="fa-regular fa-comments"></i></a>
       {% if user.is_authenticated %}
       {% if fav %}
       <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
