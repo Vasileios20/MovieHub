@@ -1,3 +1,5 @@
+from .models import Movie
+import json
 import requests
 import re
 import os
@@ -46,3 +48,34 @@ def release_date(request, movie_id):
     release_date_new = re.findall(r"\d+", release_date_before)[::-1]
     release_date = "/".join([str(elem) for elem in release_date_new])
     return release_date
+
+
+def movie_model(movie_id):
+    movie = Movie.objects.filter(movie_id=movie_id).values()
+    data = {}
+    for mov in movie:
+        jsonDec = json.decoder.JSONDecoder()
+        genres = jsonDec.decode(mov["genres"])
+        production_companies = jsonDec.decode(mov["production_companies"])
+        production_countries = jsonDec.decode(mov["production_countries"])
+        spoken_languages = jsonDec.decode(mov["spoken_languages"])
+        data.update({"title": mov["title"],
+                     "poster_path": mov["poster_path"],
+                     "overview": mov["overview"],
+                     "release_date": mov["release_date"],
+                     "revenue": mov["revenue"],
+                     "budget": mov["budget"],
+                     "runtime": mov["runtime"],
+                     "popularity": mov["popularity"],
+                     "homepage": mov["homepage"],
+                     "production_companies": production_companies,
+                     "production_countries": production_countries,
+                     "spoken_languages": spoken_languages,
+                     "original_language": mov["original_language"],
+                     "original_title": mov["original_title"],
+                     "vote_average": mov["vote_average"],
+                     "vote_count": mov["vote_count"],
+                     "cast": mov["cast"],
+                     "genres": genres,
+                     "movie_id": mov["id"]})
+    return data

@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .models import Favourites, Comment, Movie
-from .movie_details import genre, cast_list, release_date
+from .movie_details import genre, cast_list, release_date, movie_model
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
@@ -32,38 +32,6 @@ def get_movie_detail(request, movie_id):
                   original_title=data["original_title"],
                   spoken_languages=json.dumps(data["spoken_languages"]),).save()
     return movie
-
-
-def movie_model(movie_id):
-    movie = Movie.objects.all().values()
-    data = {}
-    for mov in movie:
-        if mov["movie_id"] == movie_id:
-            jsonDec = json.decoder.JSONDecoder()
-            genres = jsonDec.decode(mov["genres"])
-            production_companies = jsonDec.decode(mov["production_companies"])
-            production_countries = jsonDec.decode(mov["production_countries"])
-            spoken_languages = jsonDec.decode(mov["spoken_languages"])
-            data.update({"title": mov["title"],
-                         "poster_path": mov["poster_path"],
-                         "overview": mov["overview"],
-                         "release_date": mov["release_date"],
-                         "revenue": mov["revenue"],
-                         "budget": mov["budget"],
-                         "runtime": mov["runtime"],
-                         "popularity": mov["popularity"],
-                         "homepage": mov["homepage"],
-                         "production_companies": production_companies,
-                         "production_countries": production_countries,
-                         "spoken_languages": spoken_languages,
-                         "original_language": mov["original_language"],
-                         "original_title": mov["original_title"],
-                         "vote_average": mov["vote_average"],
-                         "vote_count": mov["vote_count"],
-                         "cast": mov["cast"],
-                         "genres": genres,
-                         "movie_id": mov["id"]})
-    return data
 
 
 def index(request):
