@@ -190,6 +190,7 @@ def view_favourites(request):
 def comment_movie(request, movie_id):
     """ A view to add a comment to a movie """
     movie = Movie.objects.filter(id=movie_id).values()
+    movie_obj = Movie.objects.get(id=movie_id)
     for m in movie:
         data = movie_model(m['movie_id'])
 
@@ -210,7 +211,7 @@ def comment_movie(request, movie_id):
         if comment_form.is_valid():
             comment_form.instance.user = request.user
             comment = comment_form.save(commit=False)
-            comment.movie_id = Movie.objects.get(id=movie_id)
+            comment.movie_id = movie_obj
             comment.save()
             messages.success(request, 'Comment added successfully')
             return redirect(

@@ -4,7 +4,7 @@ from .models import Favourites, Comment, Movie
 
 @admin.register(Favourites)
 class FavouritesAdmin(admin.ModelAdmin):
-    list_display = ('user', 'movie_id',)
+    list_display = ('id', 'user', 'movie_id',)
     list_filter = ('user', 'movie_id',)
     search_fields = ('user', 'movie_id',)
     actions = ['delete_favourites']
@@ -15,7 +15,8 @@ class FavouritesAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'comment', 'movie_id', 'created_on', 'approved',)
+    list_display = ('id', 'user', 'comment', 'movie_id',
+                    'created_on', 'approved',)
     list_filter = ('approved', 'created_on',)
     search_fields = ('user', 'email', 'comment',)
     actions = ['approve_comments']

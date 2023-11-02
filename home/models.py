@@ -5,7 +5,7 @@ from ckeditor.fields import RichTextField
 
 class Favourites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.IntegerField()
+    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.movie_id
@@ -37,15 +37,17 @@ class Movie(models.Model):
     revenue = models.IntegerField(blank=True, null=True)
     runtime = models.IntegerField(blank=True, null=True)
     budget = models.IntegerField(blank=True, null=True)
-    popularity = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
-    homepage = models.CharField(max_length=200, blank=True, null=True) 
+    popularity = models.DecimalField(
+        max_digits=5, decimal_places=1, blank=True, null=True)
+    homepage = models.CharField(max_length=200, blank=True, null=True)
     production_companies = models.TextField(blank=True, null=True)
     production_countries = models.TextField(blank=True, null=True)
     spoken_languages = models.TextField(blank=True, null=True)
     original_language = models.TextField(blank=True, null=True)
     original_title = models.TextField(blank=True, null=True)
-    vote_average = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    vote_average = models.DecimalField(
+        max_digits=3, decimal_places=1, blank=True, null=True)
     vote_count = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return f"{self.movie_id}"
