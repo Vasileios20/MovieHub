@@ -16,9 +16,14 @@ Comments
         <div class="col-8">
             <h5 class="h5">Release date: {{ release_date }}</h5>
             <p class="card-text">Overview: {{ data.overview }}</p>
-            <p class="card-text">Genres: {{ genres }}</p>
             <p class="card-text">Rating: </p>
             <p class="card-text">Vote count: </p>
+            <h5>Genres</h5>
+            <ul>
+                {% for genre in data.genres %}
+                <li class="card-text">{{ genre.name }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
