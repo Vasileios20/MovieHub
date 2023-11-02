@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Favourites, Comment
+from .models import Favourites, Comment, Movie
 
 
 @admin.register(Favourites)
@@ -22,3 +22,18 @@ class CommentAdmin(admin.ModelAdmin):
 
     def approve_comments(self, request, queryset):
         queryset.update(approved=True)
+
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ('movie_id', 'title', 'overview', 'poster_path',
+                    'release_date', 'genres', 'cast', 'revenue', 'runtime',
+                    'budget', 'popularity', 'homepage', 'production_companies',
+                    'production_countries', 'spoken_languages', 'vote_average',
+                    'vote_count', 'original_language', 'original_title',)
+    list_filter = ('movie_id', 'title', 'release_date',)
+    search_fields = ('movie_id', 'title', 'release_date',)
+    actions = ['delete_movie']
+
+    def delete_movie(self, request, queryset):
+        queryset.delete()

@@ -1,14 +1,69 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import Favourites, Comment
+from .models import Favourites, Comment, Movie
 from .movie_details import genre, cast_list, release_date
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
+import json
 import requests
 import os
 
 
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
+
+
+def get_movie_detail(request, movie_id):
+    """ A view to return the movie details """
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}'
+    response = requests.get(url)
+    data = response.json()
+    movie = Movie(movie_id=data["id"], title=data["title"],
+                  overview=data["overview"], poster_path=data["poster_path"],
+                  release_date=release_date(request, movie_id),
+                  genres=json.dumps(data["genres"]),
+                  cast=cast_list(request, movie_id), revenue=data["revenue"],
+                  budget=data["budget"], runtime=data["runtime"],
+                  popularity=data["popularity"], homepage=data["homepage"],
+                  production_companies=json.dumps(
+                      data["production_companies"]),
+                  production_countries=json.dumps(
+                      data["production_countries"]),
+                  original_language=data["original_language"],
+                  original_title=data["original_title"],
+                  spoken_languages=json.dumps(data["spoken_languages"]),).save()
+    return movie
+
+
+def movie_model(movie_id):
+    movie = Movie.objects.all().values()
+    data = {}
+    for mov in movie:
+        if mov["movie_id"] == movie_id:
+            jsonDec = json.decoder.JSONDecoder()
+            genres = jsonDec.decode(mov["genres"])
+            production_companies = jsonDec.decode(mov["production_companies"])
+            production_countries = jsonDec.decode(mov["production_countries"])
+            spoken_languages = jsonDec.decode(mov["spoken_languages"])
+            data.update({"title": mov["title"],
+                         "poster_path": mov["poster_path"],
+                         "overview": mov["overview"],
+                         "release_date": mov["release_date"],
+                         "revenue": mov["revenue"],
+                         "budget": mov["budget"],
+                         "runtime": mov["runtime"],
+                         "popularity": mov["popularity"],
+                         "homepage": mov["homepage"],
+                         "production_companies": production_companies,
+                         "production_countries": production_countries,
+                         "spoken_languages": spoken_languages,
+                         "original_language": mov["original_language"],
+                         "original_title": mov["original_title"],
+                         "vote_average": mov["vote_average"],
+                         "vote_count": mov["vote_count"],
+                         "cast": mov["cast"],
+                         "genres": genres,
+                         "movie_id": mov["id"]})
+    return data
 
 
 def index(request):
@@ -73,9 +128,23 @@ def search(request):
 
 def movie_details(request, movie_id):
     """A view to return the movie details page"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
-    response = requests.get(url)
-    data = response.json()
+    movie = Movie.objects.filter(movie_id=movie_id)
+
+    if movie.exists():
+        data = movie_model(movie_id)
+        return render(request, "movie_details.html", {
+            "data": data,
+        })
+    else:
+        url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}'
+        response = requests.get(url)
+        data = response.json()
+        data.update({"cast": cast_list(request, movie_id),
+                     "release_date": release_date(request, movie_id),
+                     })
+
+        # Save the movie to the database
+        get_movie_detail(request, movie_id)
     genres = genre(request, movie_id)
     cast = cast_list(request, movie_id)
     release_date_new = release_date(request, data["id"])
