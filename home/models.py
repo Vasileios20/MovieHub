@@ -33,7 +33,7 @@ class Movie(models.Model):
     poster_path = models.CharField(max_length=200)
     release_date = models.CharField(max_length=200)
     genres = models.TextField()
-    cast = models.CharField(max_length=200)
+    cast = models.TextField(blank=True, null=True)
     revenue = models.IntegerField(blank=True, null=True)
     runtime = models.IntegerField(blank=True, null=True)
     budget = models.IntegerField(blank=True, null=True)
