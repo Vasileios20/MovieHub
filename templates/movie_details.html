@@ -16,7 +16,7 @@ Results
       {% if fav %}
       <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
       {% else %}
-      <a href="#" class="btn btn-success mt-2">Add to favourites</a>
+      <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2">Add to favourites</a>
       {% endif %}
       {% endif %}
     </div>
