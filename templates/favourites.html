@@ -13,7 +13,7 @@ Results
         <img src="https://image.tmdb.org/t/p/w500/{{ fav.poster_path }}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{ fav.title }}</h5>
-          <a href="/search_results/{{ fav.id }}/" class="btn btn-outline-primary mt-2">View details</a>
+          <a href="/movie_details/{{ fav.movie_obj }}/" class="btn btn-outline-primary mt-2">View details</a>
           <a class="btn btn-outline-danger mt-2">Remove from favourites</a>
         </div>
       </div>
@@ -34,7 +34,7 @@ Results
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Go back</button>
-            <a id="deleteConfirm" href="{% url 'add_favourites' fav.id %}" class="btn btn-outline-danger">Remove</a>
+            <a id="deleteConfirm" href="#" class="btn btn-outline-danger">Remove</a>
           </div>
         </div>
       </div>

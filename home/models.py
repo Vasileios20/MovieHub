@@ -8,7 +8,7 @@ class Favourites(models.Model):
     movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.movie_id
+        return f"{self.movie_id}"
 
 
 class Comment(models.Model):

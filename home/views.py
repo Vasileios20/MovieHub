@@ -148,30 +148,26 @@ def movie_details(request, movie_id):
 def add_favourites(request, movie_id):
     """ A view to add a favourite to a movie """
     user = request.user
-    fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
+    movie_obj = Movie.objects.get(id=movie_id)
 
-    if fav_id.exists():
-        fav_id.delete()
-        messages.add_message(request, messages.ERROR,
-                             "Removed from favourites")
-        return redirect("/favourites/")
-    else:
-        Favourites(user=user, movie_id=movie_id).save()
-        messages.add_message(request, messages.SUCCESS,
-                             "Added to favourites")
-    return redirect(f"/search_results/{movie_id}/")
+    Favourites(user=user, movie_id=movie_obj).save()
+    messages.add_message(request, messages.SUCCESS,
+                         "Added to favourites")
+    return redirect("movie_details", movie_obj)
 
 
 def view_favourites(request):
     """ A view to return the favourites page """
     favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
+    print(fav_movies)
     fav_list = []
 
-    for movie_id in fav_movies:
-        url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
-        response = requests.get(url)
-        data = response.json()
+    for movie in fav_movies:
+        movie_obj = Movie.objects.get(id=movie)
+        movie_id = movie_obj.movie_id
+        data = movie_model(movie_id)
+        data.update({"movie_obj": movie_id})
         fav_list.append(data)
 
     if not fav_list:
