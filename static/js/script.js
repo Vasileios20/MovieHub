@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('[data-toggle="popover"]').popover()
   });
 
-  $(".btn-outline-danger").on('click', function () {
+  $("deleteModal").on('click', function () {
     let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
   });
@@ -12,7 +12,7 @@ $(document).ready(function () {
   $("#form-placeholder").on('click', function () {
     $("#form-placeholder").addClass("d-none");
     $("#form-ckeditor").addClass("d-block");
-    
+
   });
 
   setTimeout(function () {

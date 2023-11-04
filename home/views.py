@@ -147,11 +147,21 @@ def add_favourites(request, movie_id):
     return redirect("movie_details", movie_obj)
 
 
+def remove_favourite(request, movie_id):
+    """ A view to remove a favourite from a movie """
+    user = request.user
+    movie_obj = Movie.objects.filter(movie_id=movie_id)
+    for movie in movie_obj:
+        Favourites.objects.filter(user=user, movie_id=movie).delete()
+    messages.add_message(request, messages.ERROR,
+                         "Removed from favourites")
+    return redirect("favourites")
+
+
 def view_favourites(request):
     """ A view to return the favourites page """
     favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
-    print(fav_movies)
     fav_list = []
 
     for movie in fav_movies:

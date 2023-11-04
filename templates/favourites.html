@@ -14,12 +14,12 @@ Results
         <div class="card-body">
           <h5 class="card-title">{{ fav.title }}</h5>
           <a href="/movie_details/{{ fav.movie_obj }}/" class="btn btn-outline-primary mt-2">View details</a>
-          <a class="btn btn-outline-danger mt-2">Remove from favourites</a>
+          <a type="button" class="btn btn-outline-danger mt-2" data-toggle="modal" data-target="#deleteModal{{fav.movie_obj}}">Remove from favourites</a>
         </div>
       </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+    <div class="modal fade" id="deleteModal{{fav.movie_obj}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -34,7 +34,7 @@ Results
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Go back</button>
-            <a id="deleteConfirm" href="#" class="btn btn-outline-danger">Remove</a>
+            <a id="deleteConfirm" href="{% url 'remove_favourite' fav.movie_obj %}" class="btn btn-outline-danger">Remove</a>
           </div>
         </div>
       </div>
