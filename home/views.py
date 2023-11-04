@@ -98,12 +98,7 @@ def movie_details(request, movie_id):
     """A view to return the movie details page"""
     movie = Movie.objects.filter(movie_id=movie_id)
 
-    if movie.exists():
-        data = movie_model(movie_id)
-        return render(request, "movie_details.html", {
-            "data": data,
-        })
-    else:
+    if not movie.exists():
         url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}'
         response = requests.get(url)
         data = response.json()
@@ -113,36 +108,32 @@ def movie_details(request, movie_id):
 
         # Save the movie to the database
         get_movie_detail(request, movie_id)
-    genres = genre(request, movie_id)
-    cast = cast_list(request, movie_id)
-    release_date_new = release_date(request, data["id"])
-
-    # check if the user is logged in
-    user = request.user
-    if not user.is_authenticated:
-        return render(request, "movie_details.html", {
-            "data": data,
-            "genres": genres,
-            "cast": cast,
-            "release_date": release_date_new,
-        })
+        movie_obj = Movie.objects.get(movie_id=movie_id)
+        data.update({"movie_obj": movie_obj.movie_id})
+        return redirect("movie_details", movie_obj)
     else:
-        # check if the movie is already in the favourites list
-        fav_id = Favourites.objects.filter(user=user, movie_id=movie_id)
+        data = movie_model(movie_id)
+
+        # check if the user is logged in
+        user = request.user
         fav = bool
-        if fav_id.exists():
-            fav = True
+        if not user.is_authenticated:
+            fav = False
+        else:
+            # check if the movie is already in the favourites list
+            movie_obj = Movie.objects.get(movie_id=movie_id)
+            fav_id = Favourites.objects.filter(user=user, movie_id=movie_obj)
+            print(fav_id)
+            fav = bool
+            if fav_id.exists():
+                fav = True
 
-        context = {
-            "data": data,
-            "genres": genres,
-            "cast": cast,
-            "release_date": release_date_new,
-            "fav": fav,
-        }
-
-        # render the movie details page with the data from the API
-        return render(request, "movie_details.html", context)
+    context = {
+        "data": data,
+        "fav": fav,
+    }
+    # render the movie details page with the data from the API
+    return render(request, "movie_details.html", context)
 
 
 def add_favourites(request, movie_id):
