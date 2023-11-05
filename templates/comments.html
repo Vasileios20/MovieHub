@@ -8,13 +8,14 @@ Comments
 
 <div class="container">
     <h1 class="text-center">{{ data.title }}</h1>
+    <h2 id="movie_id">{{data.movie_id}}</h2>
     <div class="row">
         <div class="col-3">
             <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="200" height="100"
                 alt="...">
         </div>
         <div class="col-8">
-            <h5 class="h5">Release date: {{ release_date }}</h5>
+            <h5 class="h5">Release date: {{ data.release_date }}</h5>
             <p class="card-text">Overview: {{ data.overview }}</p>
             <p class="card-text">Rating: </p>
             <p class="card-text">Vote count: </p>
@@ -36,18 +37,12 @@ Comments
 </div>
 <div class="container mt-3">
     <div class="row">
-
         <div class="col-12 p-2 bg-light">
-            {% if commented %}
-            <div class="alert alert-success" role="alert">
-                Your comment is awaiting approval
-            </div>
-            {% else %}
             {% if user.is_authenticated %}
             <p class="d-inline mr-3 text-">Posting as: {{ user.username }}</p>
-            <form method="POST">
+            <form method="POST" id="commentForm">
                 {% csrf_token %}
-                <div class="form-group  " id="form-placeholder">
+                <div class="form-group " id="form-placeholder">
                     <label for="comment"></label>
                     <textarea class="form-control" name="comment" id="comment" cols="5" rows="2"
                         placeholder="Leave a comment"></textarea>
@@ -57,10 +52,11 @@ Comments
                     {{ form.as_p }}
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary float-right mr-3">Submit</button>
+                    <button type="submit" class="btn btn-primary float-right mr-3" id="submitButton">Submit</button>
                 </div>
             </form>
-            {% endif %}
+            {% else %}
+            <p class="text-secondary">You must be logged in to post a comment.</p>
             {% endif %}
         </div>
     </div>
@@ -69,19 +65,28 @@ Comments
             <hr>
         </div>
     </div>
-    <div class="col-12 mt-1">
-        {% for comment in page_obj %}
-        <div class="comments{% if not comment.approved and comment.user == user.username %} faded{% elif not comment.approved %} d-none{% endif %}"
-            style="padding: 10px;">
-            <div class="card shadow">
-                <div class="card-body">
-                    <p class="card-text d-inline mr-3">Posted by: {{ comment.user }}</p>
-                    <p class="card-text d-inline">Posted on: {{ comment.created_on }}</p>
-                    <p class="card-text">{{ comment.comment | safe }}</p>
+    <div class="row">
+        <div class="col-12 mt-1">
+            {% for comment in comments %}
+            <div class="comments{% if not comment.approved and comment.user == user %} faded{% elif not comment.approved %} d-none{% endif %}"
+                style="padding: 10px;">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <p>USER {{user.username}}</p>
+                        <p class="card-text d-inline mr-3">Posted by: {{ comment.user }}</p>
+                        <p class="card-text d-inline">Posted on: {{ comment.created_on }}</p>
+                        <p class="card-text" id="comment{{comment.id}}">{{ comment.comment | safe }}</p>
+                    </div>
                 </div>
+                {% if not comment.approved and comment.user == user.username %}
+                <p class="approval">This comment is awaiting approval</p>{% endif %}
+                {% if user.is_authenticated and comment.name == user.user %}
+                <button class="btn btn-delete btn-outline-danger mt-2" comment_id="{{ comment.id }}">Delete</button>
+                <button class="btn btn-edit btn-outline-info mt-2" comment_id="{{ comment.id }}">Edit</button>
+                {% endif %}
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
     <nav aria-label="Comments pages" class="pb-4 mt-2 mb-1">
         <ul class="pagination justify-content-center mt-4">
@@ -103,6 +108,26 @@ Comments
             {% endif %}
         </ul>
     </nav>
+    <div class="modal fade" id="deleteModalComment" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete your comment? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a id="deleteConfirm" href="#" class="btn btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

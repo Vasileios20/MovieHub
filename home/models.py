@@ -13,7 +13,7 @@ class Favourites(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE)
+    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='comments')
     comment = RichTextField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -22,8 +22,8 @@ class Comment(models.Model):
     class Meta:
         ordering = ['created_on']
 
-    def __str__(self) -> str:
-        return f'Comment {self.comment} by {self.user}'
+    def __str__(self):
+        return f'{self.comment}'
 
 
 class Movie(models.Model):

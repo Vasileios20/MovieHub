@@ -4,6 +4,7 @@ from .movie_details import genre, cast_list, release_date, movie_model
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
+from django.urls import reverse
 import json
 import requests
 import os
@@ -191,7 +192,7 @@ def comment_movie(request, movie_id):
     for m in movie:
         data = movie_model(m['movie_id'])
 
-    comments = Comment.objects.filter(movie_id=movie_id, approved=True)
+    comments = Comment.objects.filter(movie_id=movie_id).order_by('-created_on')
     paginator = Paginator(comments, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -223,3 +224,25 @@ def comment_movie(request, movie_id):
         "page_obj": page_obj,
         "form": comment_form,
     })
+
+
+def edit_comment(request, movie_id, comment_id, *args, **kwargs):
+    """
+    view to edit comments
+    """
+    if request.method == 'POST':
+        user = request.user
+        movie_obj = Movie.objects.get(id=movie_id)
+        comment = movie_obj.comments.filter(id=comment_id).first()
+        comment_form = CommentForm(data=request.POST, instance=comment)
+        if comment_form.is_valid() and comment.user == user:
+            comment = comment_form.save(commit=False)
+            comment.movie_id = movie_obj
+            comment.approved = False
+            comment.save()
+            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+        else:
+            messages.add_message(request, messages.ERROR,
+                                 'Error updating comment!')
+
+    return redirect('comment_movie', movie_id)
