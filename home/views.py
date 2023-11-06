@@ -4,7 +4,6 @@ from .movie_details import genre, cast_list, release_date, movie_model
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
-from django.urls import reverse
 import json
 import requests
 import os
@@ -244,5 +243,22 @@ def edit_comment(request, movie_id, comment_id, *args, **kwargs):
         else:
             messages.add_message(request, messages.ERROR,
                                  'Error updating comment!')
+
+    return redirect('comment_movie', movie_id)
+
+
+def delete_comment(request, movie_id, comment_id, *args, **kwargs):
+    """
+    view to delete comments
+    """
+    user = request.user
+    movie_obj = Movie.objects.get(id=movie_id)
+    comment = movie_obj.comments.filter(id=comment_id).first()
+    if comment.user == user:
+        comment.delete()
+        messages.add_message(request, messages.SUCCESS, 'Comment Deleted!')
+    else:
+        messages.add_message(request, messages.ERROR,
+                             'Error deleting comment!')
 
     return redirect('comment_movie', movie_id)

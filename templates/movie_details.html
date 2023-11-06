@@ -26,7 +26,7 @@ Results
       <p class="card-text">Vote average: {{ data.vote_average }}</p>
       <p class="card-text">Vote count: {{ data.vote_count }}</p>
       <p tabindex="0" class="card-text border" data-toggle="popover" data-trigger="focus" title="Cast"
-        data-content="{{ cast }}" style="cursor: pointer; width: fit-content;">Click to see cast members</p>
+        data-content="{{ data.cast }}" style="cursor: pointer; width: fit-content;">Click to see cast members</p>
       <h5>Genres</h5>
       <ul>
         {% for genre in data.genres %}
@@ -57,7 +57,7 @@ Results
       <p class="card-text">Budget: {{ data.budget }}</p>
 
       <p class="card-text">Revenue: {{ data.revenue }}</p>
-      <p class="card-text">Runtime: {{ data.runtime }}min</p>
+      <p class="card-text mb-3">Runtime: {{ data.runtime }}min</p>
     </div>
   </div>
 </div>

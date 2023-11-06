@@ -8,13 +8,12 @@ Comments
 
 <div class="container">
     <h1 class="text-center">{{ data.title }}</h1>
-    <h2 id="movie_id">{{data.movie_id}}</h2>
     <div class="row">
-        <div class="col-3">
-            <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid" width="200" height="100"
+        <div class="col-sm-3">
+            <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid card-img-top" width="200" height="100"
                 alt="...">
         </div>
-        <div class="col-8">
+        <div class="col-sm-8">
             <h5 class="h5">Release date: {{ data.release_date }}</h5>
             <p class="card-text">Overview: {{ data.overview }}</p>
             <p class="card-text">Rating: </p>
@@ -30,7 +29,7 @@ Comments
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-3 mt-2">
+        <div class="col-sm-3 mt-2">
             <strong class="text-secondary"><i class="far fa-comments"></i> Comments ({{ comment_count }})</strong>
         </div>
     </div>
@@ -72,10 +71,9 @@ Comments
                 style="padding: 10px;">
                 <div class="card shadow">
                     <div class="card-body">
-                        <p>USER {{user.username}}</p>
+                        <p class="card-text" id="comment{{comment.id}}">{{ comment.comment | safe }}</p>
                         <p class="card-text d-inline mr-3">Posted by: {{ comment.user }}</p>
                         <p class="card-text d-inline">Posted on: {{ comment.created_on }}</p>
-                        <p class="card-text" id="comment{{comment.id}}">{{ comment.comment | safe }}</p>
                     </div>
                 </div>
                 {% if not comment.approved and comment.user == user.username %}
