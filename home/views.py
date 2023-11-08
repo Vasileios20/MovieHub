@@ -35,6 +35,23 @@ def get_movie_detail(request, movie_id):
     return movie
 
 
+def rating_average(movie_id):
+    """ A view to return the average rating of a movie """
+    movie_obj = Movie.objects.get(movie_id=movie_id)
+
+    ratings = Rating.objects.filter(movie_id=movie_obj)
+    rating_list = []
+    for rating in ratings:
+        rating_list.append(rating.rating)
+    if len(rating_list) > 0:
+        average = round(sum(rating_list) / len(rating_list), 1)
+        width = str(average * 100 / 5) + "%"
+    else:
+        average = 0
+        width = 0
+    return width
+
+
 def index(request):
     """ A view to return the index page """
     movies_list = []
@@ -65,7 +82,7 @@ def search(request):
     """A view to return the search page"""
     query = request.GET.get("query")
     movies_list = []
-
+    
     if query:
         url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={query}"
         response = requests.get(url)
@@ -126,13 +143,26 @@ def movie_details(request, movie_id):
             # check if the movie is already in the favourites list
             movie_obj = Movie.objects.get(movie_id=movie_id)
             fav_id = Favourites.objects.filter(user=user, movie_id=movie_obj)
+            user_rating = Rating.objects.filter(user=user, movie_id=movie_obj)
+            if not user_rating.exists():
+                rating = "No rating"
+            else:
+                for r in user_rating:
+                    rating = str(r.rating * 20) + "%"
+            rated = bool
             fav = bool
             if fav_id.exists():
                 fav = True
+            if user_rating.exists():
+                rated = True
+    width = rating_average(movie_obj.movie_id)
 
     context = {
         "data": data,
         "fav": fav,
+        "width": width,
+        "rated": rated,
+        "rating": rating,
     }
     # render the movie details page with the data from the API
     return render(request, "movie_details.html", context)
