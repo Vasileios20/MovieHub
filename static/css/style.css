@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100vh;
 }
 
@@ -8,4 +9,73 @@ html, body {
 
 .approval {
     color: rgb(222, 146, 168);
+}
+
+.rating {
+    width: 300px;
+    margin: 0 2rem 1rem 0;
+    font-size: 35px;
+    overflow: hidden;
+}
+
+.rating input {
+    float: right;
+    opacity: 0;
+    position: absolute;
+    width: 10px;
+}
+
+.rating input,
+.rating label {
+    float: right;
+    color: #aaa;
+    text-decoration: none;
+    -webkit-transition: color .4s;
+    -moz-transition: color .4s;
+    -o-transition: color .4s;
+    transition: color .4s;
+}
+
+.rating label {
+    margin-right:1rem;
+}
+
+.rating label:hover~label,
+.rating input:focus~label,
+.rating label:hover,
+.rating input:hover,
+.rating input:hover~input,
+.rating input:focus,
+.rating input:focus~input {
+    color: orange;
+    cursor: pointer;
+}
+
+.rating2 {
+    direction: rtl;
+}
+
+.rating2 input {
+    float: none
+}
+
+@media screen and (max-width: 1024px) {
+    .rating  {
+        margin: auto;
+        width: 275px;
+    }    
+}
+
+@media screen and (max-width: 768px) {
+    .rating  {
+        margin: auto;
+        width: 250px;
+    }    
+}
+
+@media screen and (max-width: 320px) {
+    .rating label {
+        margin-right: 2rem;
+        font-size: 20px;
+    }    
 }

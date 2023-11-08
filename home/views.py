@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponse, redirect
-from .models import Favourites, Comment, Movie
+from .models import Favourites, Comment, Movie, Rating
 from .movie_details import genre, cast_list, release_date, movie_model
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 import json
 import requests
 import os
@@ -113,6 +114,8 @@ def movie_details(request, movie_id):
         return redirect("movie_details", movie_obj)
     else:
         data = movie_model(movie_id)
+        movie_obj = Movie.objects.get(movie_id=movie_id)
+        data.update({"movie_obj": movie_obj.movie_id})
 
         # check if the user is logged in
         user = request.user
@@ -123,7 +126,6 @@ def movie_details(request, movie_id):
             # check if the movie is already in the favourites list
             movie_obj = Movie.objects.get(movie_id=movie_id)
             fav_id = Favourites.objects.filter(user=user, movie_id=movie_obj)
-            print(fav_id)
             fav = bool
             if fav_id.exists():
                 fav = True
@@ -191,7 +193,8 @@ def comment_movie(request, movie_id):
     for m in movie:
         data = movie_model(m['movie_id'])
 
-    comments = Comment.objects.filter(movie_id=movie_id).order_by('-created_on')
+    comments = Comment.objects.filter(
+        movie_id=movie_id).order_by('-created_on')
     paginator = Paginator(comments, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -262,3 +265,19 @@ def delete_comment(request, movie_id, comment_id, *args, **kwargs):
                              'Error deleting comment!')
 
     return redirect('comment_movie', movie_id)
+
+
+def add_rating(request):
+    """ A view to add a rating to a movie """
+    if request.method == "POST":
+        user = request.user
+        movie_id = request.POST.get("movie_id")
+        rating = request.POST.get("rating")
+        movie_obj = Movie.objects.get(id=movie_id)
+        rate = Rating.objects.filter(user=user, movie_id=movie_obj)
+        if not rate.exists():
+            Rating(user=user, movie_id=movie_obj, rating=rating).save()
+            messages.add_message(request, messages.SUCCESS,
+                                 "Rating added successfully")
+
+    return JsonResponse({"success": True}, status=200)

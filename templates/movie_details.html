@@ -9,24 +9,39 @@ Results
   <h1 class="h1 text-center">{{ data.title }}</h1>
   <div class="row">
     <div class="col-lg-4">
-      <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="card-img-top img-fluid" width="380" height="200"
-        alt="...">
-      <a href="{% url 'comment_movie' data.movie_id %}" class="btn btn-dark mt-2">Comments <i class="fa-regular fa-comments"></i></a>
+      <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="card-img-top img-fluid" width="380"
+        height="200" alt="...">
+      <a href="{% url 'comment_movie' data.movie_id %}" class="btn btn-dark mt-2">Comments <i
+          class="fa-regular fa-comments"></i></a>
       {% if user.is_authenticated %}
       {% if fav %}
-      <button class="btn btn-outline-success mt-2 float-right" disabled>Favourites <i class="fa-solid fa-check"></i></button>
+      <button class="btn btn-outline-success mt-2 float-right" disabled>Favourites <i
+          class="fa-solid fa-check"></i></button>
       {% else %}
       <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2 float-right">Add to favourites</a>
       {% endif %}
       {% endif %}
+      <h5 class="h5 text-center mt-2">Add your rating</h5>
+      <form class="rate-form" method="POST" id="{{ data.movie_id }}">
+        {% csrf_token %}
+        <div class="rating">
+          <input name="stars" id="e5" type="submit" data-value="5"></a><label for="e5">☆</label>
+          <input name="stars" id="e4" type="submit" data-value="4"></a><label for="e4">☆</label>
+          <input name="stars" id="e3" type="submit" data-value="3"></a><label for="e3">☆</label>
+          <input name="stars" id="e2" type="submit" data-value="2"></a><label for="e2">☆</label>
+          <input name="stars" id="e1" type="submit" data-value="1"></a><label for="e1">☆</label>
+        </div>
+      </form>
     </div>
+
     <div class="col-sm-8">
       <h5 class="h5">Release date: {{ data.release_date }}</h5>
       <p class="card-text">Overview: {{ data.overview }}</p>
-      <p class="card-text">Vote average: {{ data.vote_average }}</p>
       <p class="card-text">Vote count: {{ data.vote_count }}</p>
       <p tabindex="0" class="card-text border" data-toggle="popover" data-trigger="focus" title="Cast"
         data-content="{{ data.cast }}" style="cursor: pointer; width: fit-content;">Click to see cast members</p>
+      <h5 class="h5">Cast</h5>
+      <p class="card-text">{{ data.cast }}</p>
       <h5>Genres</h5>
       <ul>
         {% for genre in data.genres %}

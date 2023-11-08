@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+  
   $(function () {
     $('[data-toggle="popover"]').popover()
   });
@@ -20,5 +20,4 @@ $(document).ready(function () {
     let alert = new bootstrap.Alert(messages);
     alert.close();
   }, 3000);
-
 });
