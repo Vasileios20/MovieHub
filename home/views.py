@@ -82,23 +82,20 @@ def search(request):
     """A view to return the search page"""
     query = request.GET.get("query")
     movies_list = []
-    
+
     if query:
         url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={query}"
         response = requests.get(url)
         data = response.json()
         results = data["results"]
-
         temp = []
+
         for result in results:
             release_date_new = release_date(request, result["id"])
-            genres = genre(request, result["id"])
             temp.append(
-                {"title": result["title"],
+                {"title": result["title"], "movie_id": result["id"],
                  "poster_path": result["poster_path"],
-                 "release_date": release_date_new,
-                 "genres": genres,
-                 "movie_id": result["id"]})
+                 "release_date": release_date_new})
 
         movies_list.append(temp) if len(temp) > 0 else None
     else:
@@ -234,6 +231,8 @@ def comment_movie(request, movie_id):
     comment_form = CommentForm()
     commented = False
 
+    width = rating_average(movie_obj.movie_id)
+
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         commented = True
@@ -255,6 +254,7 @@ def comment_movie(request, movie_id):
         "commented": commented,
         "page_obj": page_obj,
         "form": comment_form,
+        "width": width,
     })
 
 

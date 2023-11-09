@@ -10,14 +10,22 @@ Comments
     <h1 class="text-center">{{ data.title }}</h1>
     <div class="row">
         <div class="col-sm-3">
-            <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid card-img-top" width="200" height="100"
-                alt="...">
+            <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="img-fluid card-img-top" width="200"
+                height="100" alt="...">
         </div>
         <div class="col-sm-8">
             <h5 class="h5">Release date: {{ data.release_date }}</h5>
             <p class="card-text">Overview: {{ data.overview }}</p>
-            <p class="card-text">Rating: </p>
-            <p class="card-text">Vote count: </p>
+            <div class="star-ratings-css-pos">
+                <div class="star-ratings-css">
+                    <div class="star-ratings-css-top" style="width: {{width}}">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                    <div class="star-ratings-css-bottom">
+                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                    </div>
+                </div>
+            </div>
             <h5>Genres</h5>
             <ul>
                 {% for genre in data.genres %}
