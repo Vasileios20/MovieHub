@@ -1,3 +1,7 @@
+:root {
+    scroll-behavior: smooth;
+}
+
 html,
 body {
     height: 100vh;
@@ -11,6 +15,8 @@ body {
     color: rgb(222, 146, 168);
 }
 
+
+/* Display star rating in html */
 .rating {
     width: 300px;
     margin: 0 2rem 1rem 0;
@@ -37,7 +43,7 @@ body {
 }
 
 .rating label {
-    margin-right:1rem;
+    margin-right: 1rem;
 }
 
 .rating label:hover~label,
@@ -59,7 +65,7 @@ body {
     float: none
 }
 
-/* display star rating in html */
+/* Display star rated in html */
 .star-ratings-css {
     unicode-bidi: bidi-override;
     color: #c5c5c5;
@@ -88,25 +94,6 @@ body {
     z-index: 0;
 }
 
-.star-ratings-sprite {
-    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
-    font-size: 0;
-    height: 21px;
-    line-height: 0;
-    overflow: hidden;
-    text-indent: -999em;
-    width: 110px;
-    margin: 0 auto;
-}
-
-.star-ratings-sprite-rating {
-    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png") repeat-x;
-    background-position: 0 100%;
-    float: left;
-    height: 21px;
-    display: block;
-}
-
 .star-ratings-css-mt {
     margin-top: 1rem;
 }
@@ -119,23 +106,59 @@ body {
     margin-bottom: 1rem;
 }
 
+/* Scroll to top button */
+#scroll-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 0.8rem;
+    z-index: 100;
+    cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: transparent;
+    color: #afafaf;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: background 0.5s ease-in-out;
+}
+
+#scroll-top-btn i {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+
+#scroll-top-btn i:hover {
+    opacity: 0.6;
+}
+
+#scroll-top-btn:focus {
+    opacity: 0.8;
+}
+
+#scroll-top-btn:active {
+    opacity: 0.9;
+}
+
+/* Media Queries */
+
 @media screen and (max-width: 1024px) {
-    .rating  {
+    .rating {
         margin: auto;
         width: 275px;
-    }    
+    }
 }
 
 @media screen and (max-width: 768px) {
-    .rating  {
+    .rating {
         margin: auto;
         width: 250px;
-    }    
+    }
 }
 
 @media screen and (max-width: 320px) {
     .rating label {
         margin-right: 2rem;
         font-size: 20px;
-    }    
+    }
 }

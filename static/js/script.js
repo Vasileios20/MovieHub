@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  
+
   $(function () {
     $('[data-toggle="popover"]').popover()
   });
@@ -13,6 +13,13 @@ $(document).ready(function () {
     $("#form-placeholder").addClass("d-none");
     $("#form-ckeditor").addClass("d-block");
 
+  });
+
+  $("#scroll-top-btn").on('click', function () {
+    $(function () {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
   });
 
   setTimeout(function () {

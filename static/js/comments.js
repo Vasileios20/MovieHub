@@ -24,13 +24,11 @@ for (let button of editButtons) {
     button.addEventListener("click", (e) => {
         let commentId = e.target.getAttribute("comment_id");
         let commentContent = document.getElementById(`comment${commentId}`).innerText;
-        window.scrollTo(0, 350);
-        $(function() {      
-            let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
-            if (isMobile) {
-                window.scrollTo(0, 600);
-            }
-         });
+        $(function () {
+            document.querySelector('#form-ckeditor').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
         commentText.classList.add("d-block");
         formPlaceholder.classList.add("d-none");
         commentText.value = commentContent;
