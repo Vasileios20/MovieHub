@@ -82,7 +82,7 @@ def search(request):
     """A view to return the search page"""
     query = request.GET.get("query")
     movies_list = []
-    
+
     if query:
         # Search the database for the query
         title = Movie.objects.filter(title__icontains=query)
@@ -246,6 +246,13 @@ def comment_movie(request, movie_id):
     paginator = Paginator(comments, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
+    num_pages = paginator.num_pages
+    if num_pages <= 5 or page_obj.number <= 2:
+        pages = [x for x in range(1, min(num_pages + 1, 4))]
+    elif page_obj.number > num_pages - 1:
+        pages = [x for x in range(num_pages - 2, num_pages + 1)]
+    else:
+        pages = [x for x in range(page_obj.number - 1, page_obj.number + 2)]
     comment_count = Comment.objects.filter(
         movie_id=movie_id, approved=True).count()
 
@@ -276,6 +283,7 @@ def comment_movie(request, movie_id):
         "page_obj": page_obj,
         "form": comment_form,
         "width": width,
+        "pages": pages,
     })
 
 
