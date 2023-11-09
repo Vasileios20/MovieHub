@@ -143,6 +143,9 @@ body {
 /* Media Queries */
 
 @media screen and (max-width: 1024px) {
+    body {
+        font-size: 62.5%;
+    }
     .rating {
         margin: auto;
         width: 275px;

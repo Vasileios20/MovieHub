@@ -5,25 +5,26 @@ Results
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <p class="h2 text-center">Results for "{{ query }}"</p>
+<div class="container mt-3">
+  <h3 class="h3 text-center">Results for "{{ query }}"</h3>
 
-  {% for result in results_list %}
+  {% for movie in movies_list %}
 
   <div class="row">
-    {% for res in result %}
-    <div class="col-lg-3 mt-3">
+    {% for mov in movie %}
+    <div class="col-md-6 col-lg-4 mt-2">
       <div class="card">
-        {% if res.poster_path %}
-        <img src="https://image.tmdb.org/t/p/w500/{{ res.poster_path }}" class="card-img-top" alt="...">
+        {% if mov.poster_path %}
+        <img src="https://image.tmdb.org/t/p/w500/{{ mov.poster_path }}" class="card-img-top img-fluid" width="380"
+          height="200" alt="{{ mov.title}} poster">
         {% else %}
         <h3 class="h3 text-center">No poster available</h3>
         {% endif %}
         <div class="card-body">
-          <h5 class="card-title">{{ res.title }}</h5>
-          <p class="card-text">{{ res.release_date }}</p>
-          <p class="card-text">{{ res.genres }}</p>
-          <a href="/movie_details/{{ res.movie_id }}/" class="btn btn-primary">View details</a>
+          <h5 class="card-title">{{ mov.title }}</h5>
+          <p class="card-text">{{ mov.release_date }}</p>
+          <p class="card-text">{{ mov.genres }}</p>
+          <a href="/movie_details/{{ mov.movie_id }}/" class="btn btn-primary">View details</a>
         </div>
       </div>
     </div>
