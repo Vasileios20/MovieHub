@@ -14,7 +14,7 @@ class Favourites(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='comments')
-    comment = RichTextField(blank=True, null=True)
+    comment = RichTextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
@@ -36,7 +36,7 @@ class Rating(models.Model):
 
 
 class Movie(models.Model):
-    movie_id = models.IntegerField()
+    movie_id = models.IntegerField() 
     title = models.CharField(max_length=200)
     overview = models.TextField()
     poster_path = models.CharField(max_length=200)

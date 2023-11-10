@@ -274,6 +274,8 @@ def comment_movie(request, movie_id):
             return redirect(
                 'comment_movie', movie_id
             )
+        else:
+            messages.error(request, 'Error adding comment')
 
     return render(request, "comments.html", {
         "data": data,
