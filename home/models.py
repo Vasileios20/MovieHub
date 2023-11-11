@@ -13,7 +13,8 @@ class Favourites(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='comments')
+    movie_id = models.ForeignKey(
+        'Movie', on_delete=models.CASCADE, related_name='comments')
     comment = RichTextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -28,15 +29,16 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE, related_name='ratings')
+    movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE,
+                                 related_name='ratings')
     rating = models.IntegerField(null=True)
 
     def __str__(self):
-        return f"{self.movie_id} - {self.rating}"
+        return f"{self.movie_id}"
 
 
 class Movie(models.Model):
-    movie_id = models.IntegerField() 
+    movie_id = models.IntegerField()
     title = models.CharField(max_length=200)
     overview = models.TextField()
     poster_path = models.CharField(max_length=200)

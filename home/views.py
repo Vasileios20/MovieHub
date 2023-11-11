@@ -31,7 +31,8 @@ def get_movie_detail(request, movie_id):
                       data["production_countries"]),
                   original_language=data["original_language"],
                   original_title=data["original_title"],
-                  spoken_languages=json.dumps(data["spoken_languages"]),).save()
+                  spoken_languages=json.dumps(data["spoken_languages"]),
+                  ).save()
     return movie
 
 
@@ -53,22 +54,36 @@ def rating_average(movie_id):
 def index(request):
     """ A view to return the index page """
     movies_list = []
-
-    url = f"https://api.themoviedb.org/3/movie/upcoming?api_key={TMDB_API_KEY}&language=en-US&page=1"
-    response = requests.get(url)
-    data = response.json()
-    results = data["results"]
     temp = []
-    for result in results:
-        release_date_new = release_date(request, result["id"])
-        genres = genre(request, result["id"])
-        temp.append(
-            {"title": result["title"], "overview": result["overview"],
-             "poster_path": result["poster_path"],
-             "release_date": release_date_new,
-             "genres": genres,
-             "movie_id": result["id"]})
-    movies_list.append(temp) if len(temp) > 0 else None
+    temp_average = []
+    new_list = []
+
+    movies_rating = Rating.objects.all().values_list("movie_id", flat=True)
+    for movie in movies_rating:
+        temp.append(movie)
+    # Create a list of unique movie ids to avoid duplicates
+    temp = list(dict.fromkeys(temp))
+
+    # Create a list of movies with the average rating
+    for movie_id in temp:
+        movie_obj = Movie.objects.get(id=movie_id)
+        average = rating_average(movie_obj.movie_id)
+        width = str(average * 100 / 5) + "%" if average > 0 else "0%"
+        temp_average.append(
+            {"average": average, "movie_id": movie_obj.movie_id,
+             "width": width})
+    # Sort the list by the average rating
+    temp_average = sorted(
+        temp_average, key=lambda d: d['average'], reverse=True)
+
+    # Create list of sorted movies by average rating
+    for movie_id in temp_average:
+        movie_obj = Movie.objects.get(movie_id=movie_id["movie_id"])
+        data = movie_model(movie_obj.movie_id)
+        data.update({"movie_obj": movie_obj.movie_id})
+        new_list.append(data)
+    # Add the list to the movies_list
+    movies_list.append(new_list) if len(new_list) > 0 else None
 
     context = {
         "movies_list": movies_list,
