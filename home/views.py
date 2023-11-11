@@ -45,11 +45,9 @@ def rating_average(movie_id):
         rating_list.append(rating.rating)
     if len(rating_list) > 0:
         average = round(sum(rating_list) / len(rating_list), 1)
-        width = str(average * 100 / 5) + "%"
     else:
         average = 0
-        width = 0
-    return width
+    return average
 
 
 def index(request):
@@ -155,8 +153,11 @@ def movie_details(request, movie_id):
         # check if the user is logged in
         user = request.user
         fav = bool
+        rated = bool
         if not user.is_authenticated:
             fav = False
+            rated = False
+            rating = "You must be logged in to rate this movie"
         else:
             # check if the movie is already in the favourites list
             movie_obj = Movie.objects.get(movie_id=movie_id)
@@ -167,13 +168,12 @@ def movie_details(request, movie_id):
             else:
                 for r in user_rating:
                     rating = str(r.rating * 20) + "%"
-            rated = bool
-            fav = bool
             if fav_id.exists():
                 fav = True
             if user_rating.exists():
                 rated = True
-    width = rating_average(movie_obj.movie_id)
+    average = rating_average(movie_obj.movie_id)
+    width = str(average * 100 / 5) + "%"
 
     context = {
         "data": data,
