@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <header class=" fixed-top mb-5">
+    <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="{% url 'home' %}">MovieHub</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -23,22 +23,18 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view_ratings' %}">Top 20 Movies</a>
+                    </li>
                     {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                            aria-expanded="false">
-                            My lists
-                        </a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'favourites' %}">Favourites</a>
-                            <a class="dropdown-item" href="#">Watchlist</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'favourites' %}">Favourites</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
@@ -83,7 +79,7 @@
     <!-- Scroll to top button -->
     <div id="scroll-top-btn"><i class="fa-solid fa-circle-chevron-up"></i></div>
 
-    <footer class="container-fluid bg-dark text-white text-center fixed-bottom">
+    <footer class="container-fluid bg-dark text-white text-center mt-5">
         <a href="https://github.com/Vasileios20/movieHub" target="_blank"
             aria-label="Visit the game's repository page on git hub"><i class="fa-brands fa-github text-white"></i></a>
         <a href="https://www.linkedin.com/in/vasileios-tsimourdagkas/" target="_blank"
