@@ -8,18 +8,6 @@ import os
 TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
 
-def genre(request, movie_id):
-    """A view to return the movie genres"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
-    response = requests.get(url)
-    data = response.json()
-    genres_list = []
-    for genre in data["genres"]:
-        genres_list.append(genre["name"])
-    genres = ", ".join([str(elem) for elem in genres_list])
-    return genres
-
-
 def cast_list(request, movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
     response = requests.get(url)

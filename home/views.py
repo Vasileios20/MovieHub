@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from .models import Favourites, Comment, Movie, Rating
-from .movie_details import genre, cast_list, release_date, movie_model
+from .movie_details import cast_list, release_date, movie_model
 from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
