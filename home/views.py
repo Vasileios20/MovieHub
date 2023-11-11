@@ -52,8 +52,8 @@ def rating_average(movie_id):
     return average
 
 
-def index(request):
-    """ A view to return the index page """
+def ratings_list():
+    """ A view to return the ratings list """
     movies_list = []
     temp = []
     temp_average = []
@@ -69,10 +69,8 @@ def index(request):
     for movie_id in temp:
         movie_obj = Movie.objects.get(id=movie_id)
         average = rating_average(movie_obj.movie_id)
-        width = str(average * 100 / 5) + "%" if average > 0 else "0%"
         temp_average.append(
-            {"average": average, "movie_id": movie_obj.movie_id,
-             "width": width})
+            {"average": average, "movie_id": movie_obj.movie_id})
     # Sort the list by the average rating
     temp_average = sorted(
         temp_average, key=lambda d: d['average'], reverse=True)
@@ -80,16 +78,37 @@ def index(request):
     # Create list of sorted movies by average rating
     for movie_id in temp_average:
         movie_obj = Movie.objects.get(movie_id=movie_id["movie_id"])
+        average = rating_average(movie_obj.movie_id)
+        width = str(average * 100 / 5) + "%" if average > 0 else "0%"
         data = movie_model(movie_obj.movie_id)
-        data.update({"movie_obj": movie_obj.movie_id})
+        data.update({"movie_obj": movie_obj.movie_id,
+                     "width": width})
         new_list.append(data)
     # Add the list to the movies_list
     movies_list.append(new_list) if len(new_list) > 0 else None
+    return movies_list
+
+
+def index(request):
+    """ A view to return the index page """
+
+    movies_list = ratings_list()
 
     context = {
         "movies_list": movies_list,
     }
     return render(request, "index.html", context)
+
+
+def view_ratings(request):
+    """ A view to return the ratings page """
+
+    movies_list = ratings_list()
+
+    context = {
+        "movies_list": movies_list,
+    }
+    return render(request, "ratings.html", context)
 
 
 def search(request):

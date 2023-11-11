@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 
 {% block title %}
-Home
+All Ratings
 {% endblock %}
 
 {% block content %}
 
 <div class="container">
     {% for movie in movies_list %}
+    <h2 class="h2 text-center">Top 20 Movies</h2>
     <div class="row h-100">
-        {% for m in movie|slice:":3" %}
-        <div class="col-md-4 mt-3">
+        
+        {% for m in movie|slice:":20" %}
+        <div class="col-md-3 mt-3">
             <img src="https://image.tmdb.org/t/p/w500/{{ m.poster_path }}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
-                <h5 class="card-title">{{ m.title }}</h5>
+                <h5 class="card-title">{{ forloop.counter }}.{{ m.title }}</h5>                
                 <div class="star-ratings-css-pos">
                     <div class="star-ratings-css">
                         <div class="star-ratings-css-top" style="width: {{ m.width}}">
@@ -24,7 +26,6 @@ Home
                         </div>
                     </div>
                 </div>
-                <p class="card-text">Release date: {{ m.release_date }}</p>
                 <a href="/movie_details/{{ m.movie_obj }}/" class="btn btn-primary">View details</a>
             </div>
         </div>
