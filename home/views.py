@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import CommentForm
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 import json
 import requests
 import os
@@ -201,6 +202,7 @@ def movie_details(request, movie_id):
     return render(request, "movie_details.html", context)
 
 
+@login_required
 def add_favourites(request, movie_id):
     """ A view to add a favourite to a movie """
     user = request.user
@@ -212,6 +214,7 @@ def add_favourites(request, movie_id):
     return redirect("movie_details", movie_obj)
 
 
+@login_required
 def remove_favourite(request, movie_id):
     """ A view to remove a favourite from a movie """
     user = request.user
@@ -223,6 +226,7 @@ def remove_favourite(request, movie_id):
     return redirect("favourites")
 
 
+@login_required
 def view_favourites(request):
     """ A view to return the favourites page """
     favourites = Favourites.objects.filter(user=request.user)
@@ -249,6 +253,7 @@ def view_favourites(request):
                       )
 
 
+@login_required
 def comment_movie(request, movie_id):
     """ A view to add a comment to a movie """
     movie = Movie.objects.filter(id=movie_id).values()
@@ -304,6 +309,7 @@ def comment_movie(request, movie_id):
     })
 
 
+@login_required
 def edit_comment(request, movie_id, comment_id, *args, **kwargs):
     """
     view to edit comments
@@ -326,6 +332,7 @@ def edit_comment(request, movie_id, comment_id, *args, **kwargs):
     return redirect('comment_movie', movie_id)
 
 
+@login_required
 def delete_comment(request, movie_id, comment_id, *args, **kwargs):
     """
     view to delete comments
@@ -343,6 +350,7 @@ def delete_comment(request, movie_id, comment_id, *args, **kwargs):
     return redirect('comment_movie', movie_id)
 
 
+@login_required
 def add_rating(request):
     """ A view to add a rating to a movie """
     if request.method == "POST":
