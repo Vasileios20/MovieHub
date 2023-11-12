@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cloudinary %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 text-center m-auto">
+            <h2>Error 405: Method Not Allowed</h2>
+            
+            <div>
+                {% cloudinary 'error405.jpg' width=300 height=300  %}
+            </div>
+            <div class="mt-5">
+                <a href="{% url 'home' %}" class="btn btn-md btn-secondary">
+                    Let's get you back home!
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
