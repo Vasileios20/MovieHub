@@ -7,6 +7,25 @@ body {
     height: 100vh;
 }
 
+.signup input,
+.login input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#id_remember {
+    width: fit-content;
+}
+
+.border-clr {
+    border: 1px solid #bbbbbb;
+    border-radius: 5px;
+}
+
 .faded {
     color: rgb(172, 175, 175);
 }

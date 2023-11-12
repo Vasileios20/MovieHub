@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load cloudinary %}
+
 
 {% block title %}
 Results
@@ -6,24 +8,25 @@ Results
 
 {% block content %}
 <div class="container mt-3">
-  <h3 class="h3 text-center">Results for "{{ query }}"</h3>
+  <h5 class="h5 text-center">Results for "{{ query }}"</h5>
 
   {% for movie in movies_list %}
 
-  <div class="row">
+  <div class="row pb-2">
     {% for mov in movie %}
     <div class="col-md-6 col-lg-4 mt-2">
-      <div class="card">
+      <div >
         {% if mov.poster_path %}
         <img src="https://image.tmdb.org/t/p/w500/{{ mov.poster_path }}" class="card-img-top img-fluid" width="380"
           height="200" alt="{{ mov.title}} poster">
         {% else %}
-        <h3 class="h3 text-center">No poster available</h3>
+        <div class="text-center">
+          {% cloudinary 'No-Image-Placeholder_kjibsc.svg' %}
+        </div>
         {% endif %}
-        <div class="card-body">
+        <div class="p-2">
           <h5 class="card-title">{{ mov.title }}</h5>
-          <p class="card-text">{{ mov.release_date }}</p>
-          <p class="card-text">{{ mov.genres }}</p>
+          <p class="card-text">Release date:{{ mov.release_date }}</p>
           <a href="/movie_details/{{ mov.movie_id }}/" class="btn btn-primary">View details</a>
         </div>
       </div>
