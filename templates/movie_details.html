@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block title %}
 Movie
@@ -8,17 +9,16 @@ Movie
 <div class="container mt-2">
   <h1 class="h1 text-center">{{ data.title }}</h1>
   <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-4 col-md-7">
       <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="card-img-top img-fluid" width="380"
         height="200" alt="...">
-      <a href="{% url 'comment_movie' data.movie_id %}" class="btn btn-dark mt-2">Comments <i
-          class="fa-regular fa-comments"></i></a>
       {% if user.is_authenticated %}
       {% if fav %}
-      <button class="btn btn-outline-success mt-2 float-right" disabled>Favourites <i
-          class="fa-solid fa-check"></i></button>
+      <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
       {% else %}
-      <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2 float-right">Add to favourites</a>
+      <div class="d-flex">
+        <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2">Add to favourites</a>
+      </div>
       {% endif %}
       {% if rated %}
       <div class="d-flex">
@@ -36,8 +36,8 @@ Movie
         </div>
       </div>
       {% else %}
-      <h5 class="h5 text-center">Add your rating</h5>
-      <form class="rate-form" method="POST" id="{{ data.movie_id }}">
+      <h5 class="h5 text-center mt-2">Add your rating</h5>
+      <form class="rate-form mx-5" method="POST" id="{{ data.movie_id }}">
         {% csrf_token %}
         <div class="rating">
           <input name="stars" id="e5" type="submit" data-value="5"></a><label for="e5">☆</label>
@@ -50,7 +50,7 @@ Movie
       {% endif %}
       {% endif %}
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-8 col-md-12 col-lg-8">
       <h5 class="h5">Release date: {{ data.release_date }}</h5>
       <p class="card-text">Overview: {{ data.overview }}</p>
       <div class="star-ratings-css-pos">
@@ -62,18 +62,19 @@ Movie
           </div>
         </div>
       </div>
-      <p class="card-text">Vote count: {{ data.vote_count }}</p>
-      <p tabindex="0" class="card-text border" data-toggle="popover" data-trigger="focus" title="Cast"
-        data-content="{{ data.cast }}" style="cursor: pointer; width: fit-content;">Click to see cast members</p>
-      <h5 class="h5">Cast</h5>
-      <p class="card-text">{{ data.cast }}</p>
+      <h5><a href="{% url 'comment_movie' data.movie_id %}" class="btn-link mb-1">Comments <i
+            class="fa-regular fa-comments"></i></a></h5>
+      <div class="mt-2">
+        <h5 class="h5">Cast</h5>
+        <p class="card-text">{{ data.cast }}</p>
+      </div>
       <h5>Genres</h5>
       <ul>
         {% for genre in data.genres %}
         <li class="card-text">{{ genre.name }}</li>
         {% endfor %}
       </ul>
-      <p class="card-text"><a href="{{ data.homepage }}" target="_blank">Homepage</a></p>
+      <h5 class="card-text"><a href="{{ data.homepage }}" target="_blank">Homepage</a></h5>
       <h5 class="h5">Production companies</h5>
       <ul>
         {% for company in data.production_companies %}
@@ -92,12 +93,16 @@ Movie
         <li class="card-text">{{ language.name }}</li>
         {% endfor %}
       </ul>
-      <p class="card-text">Original language: {{ data.original_language }}</p>
-      <p class="card-text">Original title: {{ data.original_title }}</p>
-      <p class="card-text">Budget: {{ data.budget }}</p>
-
-      <p class="card-text">Revenue: {{ data.revenue }}</p>
-      <p class="card-text mb-4">Runtime: {{ data.runtime }}min</p>
+      <h5 class="h5">Original language</h5>
+      <p class="card-text">{{ data.original_language }}</p>
+      <h5 class="h5">Original title</h5>
+      <p class="card-text">{{ data.original_title }}</p>
+      <h5 class="h5">Budget</h5>
+      <p class="card-text">${{ data.budget|intcomma }}</p>
+      <h5 class="h5">Revenue</h5>
+      <p class="card-text">${{ data.revenue|intcomma }}</p>
+      <h5 class="h5">Runtime</h5>
+      <p class="card-text mb-4">{{ data.runtime }}min</p>
     </div>
   </div>
 </div>
