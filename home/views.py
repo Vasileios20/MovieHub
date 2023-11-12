@@ -115,45 +115,48 @@ def search(request):
     """A view to return the search page"""
     query = request.GET.get("query")
     movies_list = []
+    query = query.strip()
 
-    if query:
-        # Search the database for the query
-        title = Movie.objects.filter(title__icontains=query)
-        temp = []
-        if title.exists():
-            for m in title:
-                temp.append({"title": m.title,
-                             "movie_id": m.movie_id,
-                             "poster_path": m.poster_path,
-                             "release_date": m.release_date,
-                             })
-        # Search the API for the query
-        url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={query}"
-        response = requests.get(url)
-        data = response.json()
-        results = data["results"]
-        temp_list = []
-        # Add the results to a list
-        for result in results:
-            release_date_new = release_date(request, result["id"])
-            temp_list.append(
-                {"title": result["title"], "movie_id": result["id"],
-                 "poster_path": result["poster_path"],
-                 "release_date": release_date_new})
-        # Add the results from the database and the API to a list
-        temp.extend(temp_list)
-        # Remove duplicates from the list
-        movie_set = set()
-        new_list = []
-        for m in temp:
-            t = tuple(m.items())
-            if t not in movie_set:
-                movie_set.add(t)
-                new_list.append(m)
-        # Add the list to the movies_list
-        movies_list.append(new_list) if len(new_list) > 0 else None
+    if query == "":
+        messages.error(request, "Please enter a search query")
+        return redirect("home")
     else:
-        return HttpResponse("Please enter a search query")
+        if query:
+            # Search the database for the query
+            title = Movie.objects.filter(title__icontains=query)
+            temp = []
+            if title.exists():
+                for m in title:
+                    temp.append({"title": m.title,
+                                 "movie_id": m.movie_id,
+                                 "poster_path": m.poster_path,
+                                 "release_date": m.release_date,
+                                 })
+            # Search the API for the query
+            url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={query}"
+            response = requests.get(url)
+            data = response.json()
+            results = data["results"]
+            temp_list = []
+            # Add the results to a list
+            for result in results:
+                release_date_new = release_date(request, result["id"])
+                temp_list.append(
+                    {"title": result["title"], "movie_id": result["id"],
+                     "poster_path": result["poster_path"],
+                     "release_date": release_date_new})
+            # Add the results from the database and the API to a list
+            temp.extend(temp_list)
+            # Remove duplicates from the list
+            movie_set = set()
+            new_list = []
+            for m in temp:
+                t = tuple(m.items())
+                if t not in movie_set:
+                    movie_set.add(t)
+                    new_list.append(m)
+            # Add the list to the movies_list
+            movies_list.append(new_list) if len(new_list) > 0 else None
 
     context = {
         "query": query,
