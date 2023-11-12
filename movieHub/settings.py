@@ -43,9 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    "django.contrib.humanize",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     "cloudinary_storage",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
@@ -65,6 +66,8 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 APPEND_SLASH = False
+
+CSRF_TRUSTED_ORIGINS = ['https://moviehub-vas-2ed6679610a9.herokuapp.com/']
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
