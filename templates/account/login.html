@@ -6,7 +6,7 @@
 {% block head_title %}{% trans "Login" %}{% endblock head_title %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-2">
   <div class="row">
     <div class="col-6 m-auto">
       <h1>{% trans "Login" %}</h1>
@@ -20,8 +20,8 @@
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}" hidden>{% trans "Forgot Password?" %}</a>
-        <button class="primaryAction btn btn-secondary" type="submit">{% trans "Sign In" %}</button>
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        <button class="primaryAction btn btn-secondary float-right" type="submit">{% trans "Login" %}</button>
       </form>
     </div>
   </div>

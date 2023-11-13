@@ -6,9 +6,12 @@ html,
 body {
     height: 100vh;
 }
-
+/* Sign Up/ Login/ Password Change/ Password Reset forms */
 .signup input,
-.login input {
+.login input,
+.password_change input,
+.password_reset input,
+.password_reset_from_key input {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
