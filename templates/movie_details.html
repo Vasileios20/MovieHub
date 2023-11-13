@@ -9,19 +9,22 @@ Movie
 <div class="container mt-2">
   <h1 class="h1 text-center">{{ data.title }}</h1>
   <div class="row">
-    <div class="col-lg-4 col-md-7">
+    <div class="col-lg-4 col-md-7 mx-auto">
       <img src="https://image.tmdb.org/t/p/w500/{{ data.poster_path }}" class="card-img-top img-fluid" width="380"
-        height="200" alt="...">
+        height="200" alt="{{ data.poster_path }} poster">
       {% if user.is_authenticated %}
       {% if fav %}
-      <button class="btn btn-outline-success mt-2" disabled>Favourites <i class="fa-solid fa-check"></i></button>
+      <div class="d-flex">
+        <button class="btn btn-outline-success mt-2 mx-auto" disabled>Favourites <i
+            class="fa-solid fa-check"></i></button>
+      </div>
       {% else %}
       <div class="d-flex">
-        <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2">Add to favourites</a>
+        <a href="{% url 'add_favourites' data.movie_id %}" class="btn btn-success mt-2 mx-auto">Add to favourites</a>
       </div>
       {% endif %}
       {% if rated %}
-      <div class="d-flex">
+      <div class="d-flex justify-content-center">
         <div class="star-ratings-css-mt">
           <p class="">Your rating:</p>
         </div>
@@ -36,17 +39,19 @@ Movie
         </div>
       </div>
       {% else %}
-      <h5 class="h5 text-center mt-2">Add your rating</h5>
-      <form class="rate-form mx-5" method="POST" id="{{ data.movie_id }}">
-        {% csrf_token %}
-        <div class="rating">
-          <input name="stars" id="e5" type="submit" data-value="5"></a><label for="e5">☆</label>
-          <input name="stars" id="e4" type="submit" data-value="4"></a><label for="e4">☆</label>
-          <input name="stars" id="e3" type="submit" data-value="3"></a><label for="e3">☆</label>
-          <input name="stars" id="e2" type="submit" data-value="2"></a><label for="e2">☆</label>
-          <input name="stars" id="e1" type="submit" data-value="1"></a><label for="e1">☆</label>
-        </div>
-      </form>
+      <div class="flex-column">
+        <h5 class="h5 text-center mt-2">Add your rating</h5>
+        <form class="rate-form" method="POST" id="{{ data.movie_id }}">
+          {% csrf_token %}
+          <div class="rating">
+            <input name="stars" id="e5" type="submit" data-value="5"></a><label for="e5">☆</label>
+            <input name="stars" id="e4" type="submit" data-value="4"></a><label for="e4">☆</label>
+            <input name="stars" id="e3" type="submit" data-value="3"></a><label for="e3">☆</label>
+            <input name="stars" id="e2" type="submit" data-value="2"></a><label for="e2">☆</label>
+            <input name="stars" id="e1" type="submit" data-value="1"></a><label for="e1">☆</label>
+          </div>
+        </form>
+      </div>
       {% endif %}
       {% endif %}
     </div>
@@ -74,7 +79,7 @@ Movie
         <li class="card-text">{{ genre.name }}</li>
         {% endfor %}
       </ul>
-      <h5 class="card-text"><a href="{{ data.homepage }}" target="_blank">Homepage</a></h5>
+      <h5 class="card-text"><a href="{{ data.homepage }}" target="_blank">{{ data.title }}</a></h5>
       <h5 class="h5">Production companies</h5>
       <ul>
         {% for company in data.production_companies %}

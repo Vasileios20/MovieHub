@@ -6,6 +6,7 @@ html,
 body {
     height: 100vh;
 }
+
 /* Sign Up/ Login/ Password Change/ Password Reset forms */
 .signup input,
 .login input,
@@ -172,6 +173,10 @@ body {
         margin: auto;
         width: 275px;
     }
+
+    .rate-form {
+        padding-right: 3rem;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -179,11 +184,18 @@ body {
         margin: auto;
         width: 250px;
     }
+    .rate-form {
+        padding-left: 3.5rem;
+    }
 }
 
 @media screen and (max-width: 320px) {
     .rating label {
         margin-right: 2rem;
         font-size: 20px;
+    }
+
+    .rate-form {
+        padding-left: 1.5rem;
     }
 }
