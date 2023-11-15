@@ -7,6 +7,13 @@ body {
     height: 100vh;
 }
 
+.contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+
+}
+
 /* Sign Up/ Login/ Password Change/ Password Reset forms */
 .signup input,
 .login input,

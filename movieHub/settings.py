@@ -52,17 +52,22 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "cloudinary",
     "django_summernote",
+    "crispy_forms",
+    "crispy_bootstrap4",
     "ckeditor",
     "home",
+    "contact",
 ]
 
 SITE_ID = 1
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get("EMAIL_ADDRESS")
@@ -75,6 +80,8 @@ LOGOUT_REDIRECT_URL = '/'
 APPEND_SLASH = False
 
 CSRF_TRUSTED_ORIGINS = ['https://moviehub-vas-2ed6679610a9.herokuapp.com/']
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
