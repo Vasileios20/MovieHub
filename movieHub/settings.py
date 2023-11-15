@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     "ckeditor",
     "home",
+    "about",
     "contact",
 ]
 

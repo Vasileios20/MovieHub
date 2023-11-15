@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load cloudinary %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center ">
+        <div class="col-md-8">
+            <h1 class="text-center">About</h1>
+
+            <p>Welcome to <a href="{% url 'home' %}" class="">VastMovieHub</a>, your one-stop destination for all things
+                cinema! We are passionate about
+                movies, and our website is designed with you, the movie enthusiast, in mind. Whether you're a casual
+                viewer or a
+                die-hard cinephile, we've got something for everyone.</p>
+
+            <h4>Discover:</h4>
+
+            <p>Embark on a journey through our extensive movie database, spanning across genres, eras, and cultures.
+                Whether you're a fan of timeless classics or the latest blockbusters, VastMovieHub has something for
+                everyone.</p>
+
+            <h4>Interact:</h4>
+
+            <p>Express your thoughts and feelings about the movies you watch by leaving comments. Engage in vibrant
+                discussions with fellow cinephiles, sharing insights, opinions, and recommendations. Your voice matters,
+                and VastMovieHub is the perfect space to connect with others who share your passion for film.</p>
+
+            <h4>Rate a movie:</h4>
+
+            <p>Express your feelings about a movie with our star rating system. Give your favorite films the
+                recognition they deserve, or warn others about those that might not be worth the watch.</p>
+
+            <h4>Create Favourites List:</h4>
+
+            <p>Curate your own movie list to organize and showcase your favorite films. Whether it's a collection of
+                must-watch classics, a themed marathon, or a list of hidden gems, your movie preferences are uniquely
+                yours, and VastMovieHub empowers you to celebrate them.</p>
+
+            <h4>Update and Delete Comments:</h4>
+
+            <p>Your opinions may evolve, and VastMovieHub gives you the flexibility to update or remove your comments.
+                Keep your movie discussions dynamic and reflective of your changing perspectives.</p>
+            <p>Join us at VastMovieHub, where the love for movies knows no bounds. Your cinematic journey starts here,
+                and the possibilities are as vast as your imagination.</p>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
