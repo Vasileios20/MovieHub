@@ -10,22 +10,25 @@ Home
     {% for movie in movies_list %}
     <div class="row h-100">
         {% for m in movie|slice:":3" %}
-        <div class="col-md-4 mt-3">
-            <img src="https://image.tmdb.org/t/p/w500/{{ m.poster_path }}" class="card-img-top img-fluid" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ m.title }}</h5>
-                <div class="star-ratings-css-pos">
-                    <div class="star-ratings-css">
-                        <div class="star-ratings-css-top" style="width: {{ m.width}}">
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                        </div>
-                        <div class="star-ratings-css-bottom">
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        <div class="col-md-4 my-3">
+            <div class="card">
+                <img src="https://image.tmdb.org/t/p/w500/{{ m.poster_path }}" class="card-img-top img-fluid"
+                    alt="{{ m.title }} poster" width="320" height="480">
+                <div class="card-body">
+                    <h5 class="card-title card-title-h pb-5">{{ forloop.counter }}.{{ m.title }}</h5>
+                    <div class="star-ratings-css-pos">
+                        <div class="star-ratings-css">
+                            <div class="star-ratings-css-top" style="width: {{ m.width}}">
+                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            </div>
+                            <div class="star-ratings-css-bottom">
+                                <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+                            </div>
                         </div>
                     </div>
+                    <p class="card-text">Release date: {{ m.release_date }}</p>
+                    <a href="/movie_details/{{ m.movie_obj }}/" class="btn btn-primary">View details</a>
                 </div>
-                <p class="card-text">Release date: {{ m.release_date }}</p>
-                <a href="/movie_details/{{ m.movie_obj }}/" class="btn btn-primary">View details</a>
             </div>
         </div>
         {% endfor %}

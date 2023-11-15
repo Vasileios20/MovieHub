@@ -30,6 +30,8 @@ body {
     border-radius: 5px;
 }
 
+/* Unapproved comments */
+
 .faded {
     color: rgb(172, 175, 175);
 }
@@ -37,6 +39,8 @@ body {
 .approval {
     color: rgb(222, 146, 168);
 }
+
+/* Pagination */
 
 #active {
     background-color: rgba(160, 160, 252, 0.3);
@@ -97,7 +101,7 @@ body {
     color: #c5c5c5;
     font-size: 25px;
     height: 25px;
-    margin: 0 auto;
+    margin: 10px auto;
     position: relative;
     padding: 0;
     text-shadow: 0px 1px 0 #a2a2a2;
@@ -166,6 +170,15 @@ body {
     opacity: 0.9;
 }
 
+/* Card styles */
+.card {
+    word-wrap: normal;
+}
+
+.card-title-h {
+    height: 4rem;
+}
+
 /* Media Queries */
 
 @media screen and (max-width: 1024px) {
@@ -184,12 +197,21 @@ body {
         margin: auto;
         width: 250px;
     }
+
     .rate-form {
         padding-left: 3.5rem;
     }
+
+    .star-ratings-css-pos {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        margin-right: 50rem;
+        margin-top: 3rem;
+    }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 430px) {
     .rating label {
         margin-right: 2rem;
         font-size: 20px;
@@ -197,5 +219,25 @@ body {
 
     .rate-form {
         padding-left: 1.5rem;
+    }
+
+    .star-ratings-css-pos {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+        margin-right: 50rem;
+        margin-top: 2rem;
+    }
+
+    .card-title-h {
+        height: 2.5rem;
+    }
+
+    .card-title-h-search {
+        height: 4rem;
+    }
+
+    .card-text {
+        margin-top: 2rem;
     }
 }

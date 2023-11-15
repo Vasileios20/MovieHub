@@ -15,17 +15,17 @@ Results
   <div class="row pb-2">
     {% for mov in movie %}
     <div class="col-md-6 col-lg-4 mt-2">
-      <div >
+      <div class="card">
         {% if mov.poster_path %}
-        <img src="https://image.tmdb.org/t/p/w500/{{ mov.poster_path }}" class="card-img-top img-fluid" width="380"
-          height="200" alt="{{ mov.title}} poster">
+        <img src="https://image.tmdb.org/t/p/w500/{{ mov.poster_path }}" class="card-img-top img-fluid" width="320"
+          height="280" alt="{{ mov.title}} poster">
         {% else %}
-        <div class="text-center">
-          {% cloudinary 'No-Image-Placeholder_kjibsc.svg' %}
+        <div class="">
+          {% cloudinary 'No-Image-Placeholder_kjibsc.svg' width=320 height=480 %}
         </div>
         {% endif %}
-        <div class="p-2">
-          <h5 class="card-title">{{ mov.title }}</h5>
+        <div class="card-body">
+          <h5 class="card-title-h card-title-h-search">{{ mov.title }}</h5>
           <p class="card-text">Release date:{{ mov.release_date }}</p>
           <a href="/movie_details/{{ mov.movie_id }}/" class="btn btn-primary">View details</a>
         </div>
