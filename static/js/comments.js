@@ -1,4 +1,3 @@
-const deleteModal = new bootstrap.Modal(document.getElementById("deleteModalComment"));
 let deleteButtons = document.getElementsByClassName("btn-delete");
 let editButtons = document.getElementsByClassName("btn-edit");
 let deleteConfirm = document.getElementById("deleteConfirm");
@@ -8,12 +7,14 @@ let commentForm = document.getElementById("commentForm");
 let submitButton = document.getElementById("submitButton");
 
 // empty the comment text after post
-
-commentText.value = "";
+if (commentText) {
+    commentText.value = "";
+}
 
 
 for (let button of deleteButtons) {
     button.addEventListener("click", (e) => {
+        let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         let commentId = e.target.getAttribute("comment_id");
         deleteConfirm.href = `delete_comment/${commentId}`;
         deleteModal.show();
