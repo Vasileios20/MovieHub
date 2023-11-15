@@ -61,8 +61,6 @@ def movie_model(movie_id):
                      "spoken_languages": spoken_languages,
                      "original_language": mov["original_language"],
                      "original_title": mov["original_title"],
-                     "vote_average": mov["vote_average"],
-                     "vote_count": mov["vote_count"],
                      "cast": mov["cast"],
                      "genres": genres,
                      "movie_id": mov["id"]})

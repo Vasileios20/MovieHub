@@ -7,6 +7,9 @@ class Favourites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie_id = models.ForeignKey('Movie', on_delete=models.CASCADE)
 
+    class Meta:
+        verbose_name_plural = "favourites"
+
     def __str__(self):
         return f"{self.movie_id}"
 
@@ -22,6 +25,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['created_on']
+        verbose_name_plural = "comments"
 
     def __str__(self):
         return f'{self.comment}'
@@ -44,21 +48,21 @@ class Movie(models.Model):
     poster_path = models.CharField(max_length=200)
     release_date = models.CharField(max_length=200)
     genres = models.TextField()
-    cast = models.TextField(blank=True, null=True)
+    cast = models.TextField()
     revenue = models.IntegerField(blank=True, null=True)
     runtime = models.IntegerField(blank=True, null=True)
     budget = models.IntegerField(blank=True, null=True)
     popularity = models.DecimalField(
         max_digits=5, decimal_places=1, blank=True, null=True)
     homepage = models.CharField(max_length=200, blank=True, null=True)
-    production_companies = models.TextField(blank=True, null=True)
-    production_countries = models.TextField(blank=True, null=True)
-    spoken_languages = models.TextField(blank=True, null=True)
-    original_language = models.TextField(blank=True, null=True)
-    original_title = models.TextField(blank=True, null=True)
-    vote_average = models.DecimalField(
-        max_digits=3, decimal_places=1, blank=True, null=True)
-    vote_count = models.IntegerField(blank=True, null=True)
+    production_companies = models.TextField()
+    production_countries = models.TextField()
+    spoken_languages = models.TextField()
+    original_language = models.TextField()
+    original_title = models.TextField()
+
+    class Meta:
+        verbose_name_plural = "movies"
 
     def __str__(self):
         return f"{self.movie_id}"
