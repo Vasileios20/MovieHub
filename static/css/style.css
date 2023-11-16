@@ -14,6 +14,10 @@ body {
 
 }
 
+.footer {
+    height: 2.8rem;
+}
+
 /* Sign Up/ Login/ Password Change/ Password Reset forms */
 .signup input,
 .login input,
