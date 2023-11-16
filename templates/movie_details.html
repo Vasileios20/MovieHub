@@ -69,44 +69,44 @@ Movie
       </div>
       <h5><a href="{% url 'comment_movie' data.movie_id %}" class="btn-link mb-1">Comments <i
             class="fa-regular fa-comments"></i></a></h5>
-      <div class="mt-2">
+      <div class="pt-2">
         <h5 class="h5">Cast</h5>
         <p class="card-text">{{ data.cast }}</p>
       </div>
-      <h5>Genres</h5>
+      <h5 class="pt-3">Genres</h5>
       <ul>
         {% for genre in data.genres %}
         <li class="card-text">{{ genre.name }}</li>
         {% endfor %}
       </ul>
       <h5 class="card-text"><a href="{{ data.homepage }}" target="_blank">{{ data.title }}</a></h5>
-      <h5 class="h5">Production companies</h5>
+      <h5 class="h5 pt-3">Production companies</h5>
       <ul>
         {% for company in data.production_companies %}
         <li class="card-text">{{ company.name }}</li>
         {% endfor %}
       </ul>
-      <h5 class="h5">Production countries</h5>
+      <h5 class="h5 pt-3">Production countries</h5>
       <ul>
         {% for country in data.production_countries %}
         <li class="card-text">Genre: {{ country.name }}</li>
         {% endfor %}
       </ul>
-      <h5 class="h5">Spoken languages</h5>
+      <h5 class="h5 pt-3">Spoken languages</h5>
       <ul>
         {% for language in data.spoken_languages %}
         <li class="card-text">{{ language.name }}</li>
         {% endfor %}
       </ul>
-      <h5 class="h5">Original language</h5>
+      <h5 class="h5 pt-3">Original language</h5>
       <p class="card-text">{{ data.original_language }}</p>
-      <h5 class="h5">Original title</h5>
+      <h5 class="h5 pt-3">Original title</h5>
       <p class="card-text">{{ data.original_title }}</p>
-      <h5 class="h5">Budget</h5>
+      <h5 class="h5 pt-3">Budget</h5>
       <p class="card-text">${{ data.budget|intcomma }}</p>
-      <h5 class="h5">Revenue</h5>
+      <h5 class="h5 pt-3">Revenue</h5>
       <p class="card-text">${{ data.revenue|intcomma }}</p>
-      <h5 class="h5">Runtime</h5>
+      <h5 class="h5 pt-3">Runtime</h5>
       <p class="card-text mb-4">{{ data.runtime }}min</p>
     </div>
   </div>
