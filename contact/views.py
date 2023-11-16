@@ -17,18 +17,24 @@ def contact(request):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
             message = strip_tags(message)
-            form.save()
-            messages.success(request, 'Form submitted successfully')
+            message = message.replace("&nbsp;", " ")
+            message = str(message).strip()
 
-            EmailMessage(
-                subject,
-                message,
-                'form-response@example.com',
-                [EMAIL_ADDRESS],
-                [],
-                reply_to=[email]
-            ).send()
-            return redirect('contact')
+            if message == '':
+                messages.error(request, "You can't submit an empty form")
+            else:
+                form.save()
+                messages.success(request, 'Form submitted successfully')
+
+                EmailMessage(
+                    subject,
+                    message,
+                    'form-response@example.com',
+                    [EMAIL_ADDRESS],
+                    [],
+                    reply_to=[email]
+                ).send()
+                return redirect('contact')
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})

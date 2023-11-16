@@ -12,8 +12,8 @@
                 <form action="/contact/" method="post">
                     {% csrf_token %}
                     {{ form.media }}
+                    {{ form.errors }}
                     {{ form|crispy }}
-                    
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Submit</button>
                 </form>
             </div>
