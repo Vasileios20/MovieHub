@@ -16,8 +16,8 @@ class FavouritesAdmin(admin.ModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'comment', 'movie_id',
-                    'created_on', 'approved',)
-    list_filter = ('approved', 'created_on',)
+                    'created_on', 'updated_on', 'approved',)
+    list_filter = ('approved', 'created_on', 'updated_on')
     search_fields = ('user', 'email', 'comment',)
     actions = ['approve_comments']
 

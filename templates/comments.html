@@ -80,13 +80,17 @@ Comments
                 <div class="card shadow">
                     <div class="card-body">
                         <p class="card-text" id="comment{{comment.id}}">{{ comment.comment | safe }}</p>
-                        <p class="card-text d-inline mr-3">Posted by: {{ comment.user }}</p>
+                        <p class="card-text d-inline mr-3">Posted by: {{ comment.user }}</p>                        
+                        {% if comment.updated_on|time:"TIME_FORMAT" > comment.created_on|time:"TIME_FORMAT" %}
+                        <p class="card-text d-inline">Updated on: {{ comment.updated_on }}</p>
+                        {% else %}
                         <p class="card-text d-inline">Posted on: {{ comment.created_on }}</p>
+                        {% endif %}
                     </div>
                 </div>
-                {% if not comment.approved and comment.user == user.username %}
+                {% if not comment.approved and comment.user == user %}
                 <p class="approval">This comment is awaiting approval</p>{% endif %}
-                {% if user.is_authenticated and comment.name == user.user %}
+                {% if user.is_authenticated and comment.user == user %}
                 <button class="btn btn-delete btn-outline-danger mt-2" comment_id="{{ comment.id }}">Delete</button>
                 <button class="btn btn-edit btn-outline-info mt-2" comment_id="{{ comment.id }}">Edit</button>
                 {% endif %}
