@@ -6,8 +6,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords"
+        content="movie, moviehub, movie hub, movie search, movie rating, rating, movie comments, movie reviews, movie favourites, top rated movies, top movies">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/android-chrome-192x192.png' %}">
+    <link rel="icon" href="{% static 'images/android-chrome.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>{% block title %}{% endblock %} </title>
 </head>
@@ -93,7 +99,7 @@
                 <a href="https://www.linkedin.com/in/vasileios-tsimourdagkas/" target="_blank"
                     aria-label="Visit developers LinkedIn profile"><i class="fa-brands fa-linkedin text-white"></i></a>
                 <a href="https://www.themoviedb.org/" target="_blank" aria-label="Visit TMDB API website"><img
-                        src="{% static 'tmdb.svg' %}" alt="" style="width: 90px;"></a>
+                        src="{% static 'images/tmdb.svg' %}" alt="" style="width: 90px;"></a>
             </div>
             <a class="text-white" href="{% url 'contact' %}">Contact us</a>
         </footer>
