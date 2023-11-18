@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from .models import Favourites, Comment, Movie, Rating
 from .movie_details import cast_list, release_date, movie_model
 from django.contrib import messages
@@ -16,7 +16,10 @@ TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
 def get_movie_detail(request, movie_id):
     """ A view to return the movie details """
-    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}'
+    # Get the movie details from the API and save them to the database
+    url = (
+        f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
+    )
     response = requests.get(url)
     data = response.json()
     movie = Movie(movie_id=data["id"], title=data["title"],
@@ -38,7 +41,11 @@ def get_movie_detail(request, movie_id):
 
 
 def rating_average(movie_id):
-    """ A view to return the average rating of a movie """
+    """ A view to return the average rating of a movie.
+    Get the movie object from the database and the ratings for the movie.
+    Create a list of the ratings and calculate the average.
+    If there are no ratings, return 0
+    """
     movie_obj = Movie.objects.get(movie_id=movie_id)
 
     ratings = Rating.objects.filter(movie_id=movie_obj)
@@ -73,7 +80,7 @@ def ratings_list():
             {"average": average, "movie_id": movie_obj.movie_id})
     # Sort the list by the average rating
     temp_average = sorted(
-        temp_average, key=lambda d: d['average'], reverse=True)
+        temp_average, key=lambda d: d["average"], reverse=True)
 
     # Create list of sorted movies by average rating
     for movie_id in temp_average:
@@ -113,10 +120,12 @@ def view_ratings(request):
 
 def search(request):
     """A view to return the search page"""
+    # Get the query from the search bar
     query = request.GET.get("query")
     movies_list = []
     query = query.strip()
 
+    # Check if the query is empty
     if query == "":
         messages.error(request, "Please enter a search query")
         return redirect("home")
@@ -133,7 +142,10 @@ def search(request):
                                  "release_date": m.release_date,
                                  })
             # Search the API for the query
-            url = f"https://api.themoviedb.org/3/search/movie?api_key={TMDB_API_KEY}&query={query}"
+            url = (
+                f"https://api.themoviedb.org/3/search/movie?"
+                f"api_key={TMDB_API_KEY}&query={query}"
+            )
             response = requests.get(url)
             data = response.json()
             results = data["results"]
@@ -170,8 +182,12 @@ def movie_details(request, movie_id):
     """A view to return the movie details page"""
     movie = Movie.objects.filter(movie_id=movie_id)
 
+    # Check if the movie is in the database
     if not movie.exists():
-        url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}'
+        url = (
+            f"https://api.themoviedb.org/3/movie/{movie_id}?"
+            f"api_key={TMDB_API_KEY}"
+        )
         response = requests.get(url)
         data = response.json()
         data.update({"cast": cast_list(request, movie_id),
@@ -184,6 +200,7 @@ def movie_details(request, movie_id):
         data.update({"movie_obj": movie_obj.movie_id})
         return redirect("movie_details", movie_obj)
     else:
+        # Get the movie details from the database
         data = movie_model(movie_id)
         movie_obj = Movie.objects.get(movie_id=movie_id)
         data.update({"movie_obj": movie_obj.movie_id})
@@ -197,20 +214,24 @@ def movie_details(request, movie_id):
             rated = False
             rating = "You must be logged in to rate this movie"
         else:
-            # check if the movie is already in the favourites list
             movie_obj = Movie.objects.get(movie_id=movie_id)
             fav_id = Favourites.objects.filter(user=user, movie_id=movie_obj)
             user_rating = Rating.objects.filter(user=user, movie_id=movie_obj)
+            # check of the user has rated the movie
             if not user_rating.exists():
                 rating = "No rating"
             else:
                 for r in user_rating:
                     rating = str(r.rating * 20) + "%"
+            # check if the movie is already in the favourites list
             if fav_id.exists():
                 fav = True
+            # check if the movie is already rated
             if user_rating.exists():
                 rated = True
+    # Get the average rating for the movie
     average = rating_average(movie_obj.movie_id)
+    # Calculate the width of the rating bar (stars)
     width = str(average * 100 / 5) + "%"
 
     context = {
@@ -251,10 +272,13 @@ def remove_favourite(request, movie_id):
 @login_required
 def view_favourites(request):
     """ A view to return the favourites page """
+    # Get the favourites from the database
     favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
     fav_list = []
 
+    # Get the movie details from the database update the details
+    # with the movie id and add them to a list
     for movie in fav_movies:
         movie_obj = Movie.objects.get(id=movie)
         movie_id = movie_obj.movie_id
@@ -262,6 +286,7 @@ def view_favourites(request):
         data.update({"movie_obj": movie_id})
         fav_list.append(data)
 
+    # Check if the list is empty
     if not fav_list:
         return render(request, "favourites.html",
                       {"empty_list": "Your list is empty"
@@ -278,32 +303,41 @@ def view_favourites(request):
 @login_required
 def comment_movie(request, movie_id):
     """ A view to add a comment to a movie """
+    # Get the movie details from the database
     movie = Movie.objects.filter(id=movie_id).values()
     movie_obj = Movie.objects.get(id=movie_id)
     for m in movie:
-        data = movie_model(m['movie_id'])
+        data = movie_model(m["movie_id"])
 
+    # Get the comments from the database
     comments = Comment.objects.filter(
-        movie_id=movie_id).order_by('-created_on')
+        movie_id=movie_id).order_by("-created_on")
+    # Paginate the comments
     paginator = Paginator(comments, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     num_pages = paginator.num_pages
+    # Create a list of pages to display
     if num_pages <= 5 or page_obj.number <= 2:
         pages = [x for x in range(1, min(num_pages + 1, 4))]
     elif page_obj.number > num_pages - 1:
         pages = [x for x in range(num_pages - 2, num_pages + 1)]
     else:
         pages = [x for x in range(page_obj.number - 1, page_obj.number + 2)]
+    # Get the number of comments
     comment_count = Comment.objects.filter(
         movie_id=movie_id, approved=True).count()
 
     comment_form = CommentForm()
     commented = False
 
-    width = rating_average(movie_obj.movie_id)
+    # Get the average rating for the movie
+    average = rating_average(movie_obj.movie_id)
+    # Calculate the width of the rating bar (stars)
+    width = str(average * 100 / 5) + "%"
 
-    if request.method == 'POST':
+    # Check if method is POST and if the form is valid
+    if request.method == "POST":
         comment_form = CommentForm(data=request.POST)
         commented = True
 
@@ -312,12 +346,12 @@ def comment_movie(request, movie_id):
             comment = comment_form.save(commit=False)
             comment.movie_id = movie_obj
             comment.save()
-            messages.success(request, 'Comment added successfully')
+            messages.success(request, "Comment added successfully")
             return redirect(
-                'comment_movie', movie_id
+                "comment_movie", movie_id
             )
         else:
-            messages.error(request, 'Error adding comment')
+            messages.error(request, "Error adding comment")
 
     return render(request, "comments.html", {
         "data": data,
@@ -336,22 +370,25 @@ def edit_comment(request, movie_id, comment_id, *args, **kwargs):
     """
     view to edit comments
     """
-    if request.method == 'POST':
+    # Check if method is POST and if the form is valid
+    if request.method == "POST":
+        # Get the comment from the database
         user = request.user
         movie_obj = Movie.objects.get(id=movie_id)
         comment = movie_obj.comments.filter(id=comment_id).first()
         comment_form = CommentForm(data=request.POST, instance=comment)
+        # Check if the user is the owner of the comment
         if comment_form.is_valid() and comment.user == user:
             comment = comment_form.save(commit=False)
             comment.movie_id = movie_obj
             comment.approved = False
             comment.save()
-            messages.add_message(request, messages.SUCCESS, 'Comment Updated!')
+            messages.add_message(request, messages.SUCCESS, "Comment Updated!")
         else:
             messages.add_message(request, messages.ERROR,
-                                 'Error updating comment!')
+                                 "Error updating comment!")
 
-    return redirect('comment_movie', movie_id)
+    return redirect("comment_movie", movie_id)
 
 
 @login_required
@@ -359,22 +396,25 @@ def delete_comment(request, movie_id, comment_id, *args, **kwargs):
     """
     view to delete comments
     """
+    # Get the comment from the database
     user = request.user
     movie_obj = Movie.objects.get(id=movie_id)
     comment = movie_obj.comments.filter(id=comment_id).first()
+    # Check if the user is the owner of the comment
     if comment.user == user:
         comment.delete()
-        messages.add_message(request, messages.SUCCESS, 'Comment Deleted!')
+        messages.add_message(request, messages.SUCCESS, "Comment Deleted!")
     else:
         messages.add_message(request, messages.ERROR,
-                             'Error deleting comment!')
+                             "Error deleting comment!")
 
-    return redirect('comment_movie', movie_id)
+    return redirect("comment_movie", movie_id)
 
 
 @login_required
 def add_rating(request):
     """ A view to add a rating to a movie """
+    # Check if method is POST and if the rating exists
     if request.method == "POST":
         user = request.user
         movie_id = request.POST.get("movie_id")

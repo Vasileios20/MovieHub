@@ -9,7 +9,12 @@ TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
 
 def cast_list(request, movie_id):
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={TMDB_API_KEY}&language=en-US"
+    """A view to return the movie cast list"""
+    # get the cast list
+    url = (
+        f"https://api.themoviedb.org/3/movie/{movie_id}/credits?"
+        f"api_key={TMDB_API_KEY}&language=en-US"
+    )
     response = requests.get(url)
     data = response.json()
     # sort the cast by popularity
@@ -29,9 +34,13 @@ def cast_list(request, movie_id):
 
 def release_date(request, movie_id):
     """A view to return the movie release date"""
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}&language=en-US"
+    # get the release date
+    url = (f"https://api.themoviedb.org/3/movie/{movie_id}?"
+           f"api_key={TMDB_API_KEY}&language=en-US"
+           )
     response = requests.get(url)
     data = response.json()
+    # format the release date
     release_date_before = data["release_date"]
     release_date_new = re.findall(r"\d+", release_date_before)[::-1]
     release_date = "/".join([str(elem) for elem in release_date_new])
@@ -39,8 +48,11 @@ def release_date(request, movie_id):
 
 
 def movie_model(movie_id):
+    """A view to return the movie model"""
+    # get the movie model
     movie = Movie.objects.filter(movie_id=movie_id).values()
     data = {}
+    # get the movie details
     for mov in movie:
         jsonDec = json.decoder.JSONDecoder()
         genres = jsonDec.decode(mov["genres"])
