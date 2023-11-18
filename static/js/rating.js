@@ -29,7 +29,7 @@ if (one) {
             window.location.reload();
           },
           error: function (error) {
-            alert(error.responseText)
+            alert(error.responseText);
           },
         });
 
