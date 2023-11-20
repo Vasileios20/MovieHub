@@ -10,7 +10,11 @@ EMAIL_ADDRESS = os.environ.get('EMAIL_ADDRESS')
 
 
 def contact(request):
-    """ A view to return the contact page """
+    """ A view to return the contact page with
+    the contact form.
+    Save the contact form data to the database
+    and send an email to the admin.
+    """
     # get the contact form data
     if request.method == 'POST':
         form = ContactForm(request.POST)

@@ -15,7 +15,13 @@ TMDB_API_KEY = os.environ.get("TMDB_API_KEY")
 
 
 def get_movie_detail(request, movie_id):
-    """ A view to return the movie details """
+    """ A function to get the movie details from the API
+    and save them to the database. It is called from the
+    movie_details view if the movie is not in the database.
+    param: request : request object
+    param: movie_id : movie id
+    return: movie object
+    """
     # Get the movie details from the API and save them to the database
     url = (
         f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
@@ -41,10 +47,12 @@ def get_movie_detail(request, movie_id):
 
 
 def rating_average(movie_id):
-    """ A view to return the average rating of a movie.
-    Get the movie object from the database and the ratings for the movie.
-    Create a list of the ratings and calculate the average.
-    If there are no ratings, return 0
+    """ A function to return the average rating of a movie.
+    Gets the movie object from the database and the ratings for the movie.
+    Creates a list of the ratings and calculate the average.
+    If there are no ratings, return 0.
+    param: movie_id : movie id
+    return: average rating
     """
     movie_obj = Movie.objects.get(movie_id=movie_id)
 
@@ -60,7 +68,10 @@ def rating_average(movie_id):
 
 
 def ratings_list():
-    """ A view to return the ratings list """
+    """ A function to return the rated movies list.
+    It is called from the index and ratings views.
+    return: movies_list (a list of rated movies in descending order)
+    """
     movies_list = []
     temp = []
     temp_average = []
@@ -91,13 +102,15 @@ def ratings_list():
         data.update({"movie_obj": movie_obj.movie_id,
                      "width": width})
         new_list.append(data)
-    # Add the list to the movies_list
+    # Add the new_list to the movies_list to be displayed
     movies_list.append(new_list) if len(new_list) > 0 else None
     return movies_list
 
 
 def index(request):
-    """ A view to return the index page """
+    """ A view to return the index page.
+    It calls the ratings_list function to get the rated movies list.
+    """
 
     movies_list = ratings_list()
 
@@ -108,7 +121,9 @@ def index(request):
 
 
 def view_ratings(request):
-    """ A view to return the ratings page """
+    """ A view to return the ratings page.
+     It calls the ratings_list function to get the rated movies list.
+    """
 
     movies_list = ratings_list()
 
@@ -119,7 +134,12 @@ def view_ratings(request):
 
 
 def search(request):
-    """A view to return the search page"""
+    """A view to return the search page.
+    Gets the query from the search bar and searches the database
+    and the API for the query. If the movie is in the database,
+    creates a list , then checks if the movie is in the API results
+    and adds it to the list. Then it removes the duplicates from the list.
+    """
     # Get the query from the search bar
     query = request.GET.get("query")
     movies_list = []
@@ -157,7 +177,7 @@ def search(request):
                     {"title": result["title"], "movie_id": result["id"],
                      "poster_path": result["poster_path"],
                      "release_date": release_date_new})
-            # Add the results from the database and the API to a list
+            # Extend the database movie (temp) list with the API temp_list
             temp.extend(temp_list)
             # Remove duplicates from the list
             movie_set = set()
@@ -167,7 +187,7 @@ def search(request):
                 if t not in movie_set:
                     movie_set.add(t)
                     new_list.append(m)
-            # Add the list to the movies_list
+            # Add the new_list to the movies_list to be displayed
             movies_list.append(new_list) if len(new_list) > 0 else None
 
     context = {
@@ -179,7 +199,11 @@ def search(request):
 
 
 def movie_details(request, movie_id):
-    """A view to return the movie details page"""
+    """A view to return the movie details page.
+    It gets the movie details from the database.
+    If the movie is not in the database, it calls the
+    get_movie_detail function to save the movie details
+    and redirects to the rendered movie_details page."""
     movie = Movie.objects.filter(movie_id=movie_id)
 
     # Check if the movie is in the database
@@ -247,7 +271,10 @@ def movie_details(request, movie_id):
 
 @login_required
 def add_favourites(request, movie_id):
-    """ A view to add a favourite to a movie """
+    """ A view to add a favourite to a movie.
+    Gets the movie details from the database and
+    saves them to the favourites table.
+    """
     user = request.user
     movie_obj = Movie.objects.get(id=movie_id)
 
@@ -259,7 +286,10 @@ def add_favourites(request, movie_id):
 
 @login_required
 def remove_favourite(request, movie_id):
-    """ A view to remove a favourite from a movie """
+    """ A view to remove a favourite from a movie.
+    Gets the movie details from the database and
+    removes them from the favourites table.
+    """
     user = request.user
     movie_obj = Movie.objects.filter(movie_id=movie_id)
     for movie in movie_obj:
@@ -271,7 +301,12 @@ def remove_favourite(request, movie_id):
 
 @login_required
 def view_favourites(request):
-    """ A view to return the favourites page """
+    """ A view to return the favourites page.
+    Gets the user's favourites list from the database
+    and renders the favourites page with the list.
+    If the list is empty, it renders the favourites page
+    with a message.
+    """
     # Get the favourites from the database
     favourites = Favourites.objects.filter(user=request.user)
     fav_movies = favourites.values_list("movie_id", flat=True)
@@ -302,7 +337,13 @@ def view_favourites(request):
 
 @login_required
 def comment_movie(request, movie_id):
-    """ A view to add a comment to a movie """
+    """ A view to add a comment to a movie.
+    This view saves the comment to the database.
+    Gets the comments from the database and
+    paginates them, gets the number of approved comments
+    for the movie and finally gets the average rating and
+    calculates the width of the rating bar (stars) for the movie.
+    """
     # Get the movie details from the database
     movie = Movie.objects.filter(id=movie_id).values()
     movie_obj = Movie.objects.get(id=movie_id)
@@ -367,9 +408,7 @@ def comment_movie(request, movie_id):
 
 @login_required
 def edit_comment(request, movie_id, comment_id, *args, **kwargs):
-    """
-    view to edit comments
-    """
+    """ A view to edit the comments."""
     # Check if method is POST and if the form is valid
     if request.method == "POST":
         # Get the comment from the database
@@ -393,9 +432,7 @@ def edit_comment(request, movie_id, comment_id, *args, **kwargs):
 
 @login_required
 def delete_comment(request, movie_id, comment_id, *args, **kwargs):
-    """
-    view to delete comments
-    """
+    """A view to delete comments."""
     # Get the comment from the database
     user = request.user
     movie_obj = Movie.objects.get(id=movie_id)
@@ -413,7 +450,7 @@ def delete_comment(request, movie_id, comment_id, *args, **kwargs):
 
 @login_required
 def add_rating(request):
-    """ A view to add a rating to a movie """
+    """ A view to add a rating to a movie."""
     # Check if method is POST and if the rating exists
     if request.method == "POST":
         user = request.user

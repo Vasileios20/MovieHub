@@ -33,7 +33,10 @@ def cast_list(request, movie_id):
 
 
 def release_date(request, movie_id):
-    """A view to return the movie release date"""
+    """A view to return the movie release date
+    params: movie_id - the movie id
+    return: release_date - the movie release date formatted as dd/mm/yyyy
+    """
     # get the release date
     url = (f"https://api.themoviedb.org/3/movie/{movie_id}?"
            f"api_key={TMDB_API_KEY}&language=en-US"
@@ -48,7 +51,10 @@ def release_date(request, movie_id):
 
 
 def movie_model(movie_id):
-    """A view to return the movie model"""
+    """A view to return the movie model
+    params: movie_id - the movie id
+    return: data - the movie model
+    """
     # get the movie model
     movie = Movie.objects.filter(movie_id=movie_id).values()
     data = {}
