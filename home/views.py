@@ -6,6 +6,7 @@ from .forms import CommentForm
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.utils.html import strip_tags
 import json
 import requests
 import os
@@ -384,13 +385,22 @@ def comment_movie(request, movie_id):
 
         if comment_form.is_valid():
             comment_form.instance.user = request.user
-            comment = comment_form.save(commit=False)
-            comment.movie_id = movie_obj
-            comment.save()
-            messages.success(request, "Comment added successfully")
-            return redirect(
-                "comment_movie", movie_id
-            )
+            comment_form.instance.movie_id = movie_obj
+            comment = comment_form.cleaned_data['comment']
+            comment = strip_tags(comment)
+            comment = comment.replace("&nbsp;", " ")
+            comment = str(comment).strip()
+            comment_form.instance.comment = comment
+
+            # check if the comment is empty
+            if comment == '':
+                messages.error(request, "You can't submit an empty comment")
+            else:
+                comment_form.save()
+                messages.success(request, "Comment added successfully")
+                return redirect(
+                    "comment_movie", movie_id
+                )
         else:
             messages.error(request, "Error adding comment")
 
