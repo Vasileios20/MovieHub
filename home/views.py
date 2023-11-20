@@ -428,11 +428,23 @@ def edit_comment(request, movie_id, comment_id, *args, **kwargs):
         comment_form = CommentForm(data=request.POST, instance=comment)
         # Check if the user is the owner of the comment
         if comment_form.is_valid() and comment.user == user:
-            comment = comment_form.save(commit=False)
-            comment.movie_id = movie_obj
-            comment.approved = False
-            comment.save()
-            messages.add_message(request, messages.SUCCESS, "Comment Updated!")
+            comment_form.instance.movie_id = movie_obj
+            comment = comment_form.cleaned_data['comment']
+            comment = strip_tags(comment)
+            comment = comment.replace("&nbsp;", " ")
+            comment = str(comment).strip()
+            comment_form.instance.comment = comment
+            comment_form.instance.approved = False
+            # check if the comment is empty
+            if comment == '':
+                messages.error(request, "You can't submit an empty comment")
+            else:
+                comment_form.save()
+                messages.add_message(
+                    request, messages.SUCCESS, "Comment Updated!")
+                return redirect(
+                    "comment_movie", movie_id
+                )
         else:
             messages.add_message(request, messages.ERROR,
                                  "Error updating comment!")
