@@ -22,7 +22,24 @@ This website uses [TMDB](https://www.themoviedb.org/) and the TMDB APIs but is n
   * [User Stories](#user-stories)
 * [Database Diagram]
 * [Features](#features)
-  
+  * [Navigation Bar](#navigation-bar)
+  * [Home Page](#home-page)
+  * [About Page](#about-page)
+  * [Contact Page](#contact-page)
+  * [Top 15 Movies Page](#top-15-movies-page)
+  * [Login Page](#login-page)
+  * [Logout Page](#logout-page)
+  * [Signup Page](#signup-page)
+  * [Favourites Page](#favourites-page)
+    * [Remove Favourite Modal](#remove-favourite-modal)
+  * [Search Results Page](#search-results-page)
+  * [Movie Details Page](#movie-details-page)
+  * [Comments Page](#favourites-page)
+    * [Delete Comment Modal](#delete-comment-modal)
+  * [403 error Page](#403-error-page)
+  * [404 error Page](#404-error-page)
+  * [405 error Page](#405-error-page)
+  * [500 error Page](#500-error-page)
 * [Technologies Used](#technologies-used)
   * [Languages Used](#languages-used)
   * [Frameworks, Libraries & Programs Used](#frameworks-libraries--programs-used)
@@ -137,17 +154,133 @@ Please find my Kanban Board with my user stories [here](https://github.com/users
 
 ## Features
 
+All pages on the site are responsive and have :
 
+* ### Navigation Bar
+
+Site user [navbar](/documentation/features/navbar.png) contains the logo (acts as home button), Home, About, Top 15 Movies, Login, Signup and the searh form.
+
+Registered user [navbar](/documentation/features/navbar-reg.png) contains the logo (acts as home button), Home, About, Top 15 Movies, Logout and the searh form.
+
+* [Favicon](/documentation/features/favicon.png)
+
+### Home Page
+
+The [Home Page](/documentation/features/index.png) displays the top 3 rated movies.
+
+### About Page
+
+The [About Page](/documentation/features/about.png) gives information about the website.
+
+### Contact Page
+
+The [Contact Page](/documentation/features/contact.png) contains a contact form.
+
+### Top 15 Movies Page
+
+The [Top 15 Movies Page](/documentation/features/ratings.png) displays the top 15 rated movies.
+
+### Login Page
+
+The [Login Page](/documentation/features/login.png) contains the login form and reset password link.
+
+### Logout Page
+
+The [Logout Page](/documentation/features/logout.png) logout button.
+
+### Signup Page
+
+The [Signup Page](/documentation/features/signup.png) contains the sign up form.
+
+### Favourites Page
+
+Only registered users can visit the favourites page.
+
+The [Favourites Page](/documentation/features/favourites.png) user's favourite movies.
+
+#### Remove Favourite Modal
+
+The [Remove Favourite Modal](/documentation/features/favourites-delete.png) asks the user to confirm movie removal.
+
+### Search Results Page
+
+The [Results Page](/documentation/features/results.png) contains a list of the movies generated from query entered in the search form by the user.
+
+### Movie Details Page
+
+The [Movie Page](/documentation/features/movie.png) contains the following details: poster, title, overview, release date, cast, genres, homeapage, production companies, production countries, spoken languages, original lanaguage, original title, budget, revenue and the runtime. It also displays the rating average(if rated).
+
+The registered user [Movie Page](/documentation/features/add-rating.png) contains also the give rating stars and the add favourites button.
+
+### Comment Page
+
+Only registered users can visit the comment page.
+
+The [Comment Page](/documentation/features/comments.png) contains the movie's poster, title, release date, overview, rating average and gernes on top of the page. Then the comment section where it displays the comments count, text editor, delete and edit buttons for user's own comments
+
+#### Delete Comment Modal
+
+The [Delete Comment Modal](/documentation/features/comments-delete-modal.png) asks the user to confirm comment delete.
+
+### 403 error page
+
+The [403 page](/documentation/features/403.png) displays an image with a text error 403: Forbidden.
+
+### 404 error page
+
+The [404 page](/documentation/features/404.png) displays an image with a text error 404: Not found.
+
+### 405 error page
+
+The [405 page](/documentation/features/error.png) displays an image with a text error.
+
+### 500 error page
+
+The [500 page](/documentation/features/500.png) displays an image with a text : 500 Internal server error.
 
 ## Technologies Used
 
 ### Languages Used
 
+HTML, CSS, JS, Python
+
+JSON - To serialize movie's data for network transmission between the program and [TMDB API](https://www.themoviedb.org/), and for simplified storage in the database.
+
 ### Frameworks, Libraries & Programs Used
+
+* Databases Used
+  * [ElephantSQL](https://www.elephantsql.com/)
+
+#### Frameworks Used
+
+* [Django Project](https://www.djangoproject.com/) - A framework to build the app.
+* [Bootstrap](https://getbootstrap.com/) - version 4.6.2 - CSS Framework.
 
 #### Libraries Used
 
+* [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/#) - To display the contact form.
+* [django-ckeditor](jango-ckeditor.readthedocs.io/en/latest/#toc-entry-1) - As a text editor to the contact form and the comments.
+* [Gunicorn](https://gunicorn.org/) - As the server for Heroku.
+* [Dj_database_url](https://pypi.org/project/dj-database-url/) - To parse the database URL from the environment variables in Heroku.
+* [Psycopg2](https://pypi.org/project/psycopg2/) - As an adaptor for Python and PostgreSQL databases.
+* [Allauth](https://docs.allauth.org/en/latest/installation.html) - For authentication, registration, account management.
+* [jQuery](https://jquery.com/) - A JavaScript library to handle front end functions.
+* [Cloudinary](https://cloudinary.com/) - To host images
+
 #### Programs Used
+
+* [TMDB API](https://www.themoviedb.org/) - API to get the movie details.
+* [GitHub](https://github.com/) - To save and store files for the website.
+* [VSCode](https://code.visualstudio.com/) - Code editor used for local development.
+* [GitPod](https://gitpod.io/) - IDE used to create the site.
+* [Balsamiq](https://balsamiq.com/) - Used to create wireframes.
+* [DBdiagram](/https://dbdiagram.io/home) - To create database diagrams.
+* [Techsini](https://techsini.com/multi-mockup/index.php) - To display the web image in various devices.
+* [Google Developer Tools](https://developer.chrome.com/docs/) - To test features, resposiveness and stylilng.
+* [TinyPNG](https://tinypng.com/) - To reduce size of the images.
+* [Favicon](https://favicon.io/) - To create favicon.
+* [Shields IO](https://shields.io/) - To add badges to README.
+* [Obsidian](https://code.visualstudio.com/) - To keep notes.
 
 ## Deployment and Local Development
 
@@ -274,10 +407,36 @@ If you don't already have an account to Cloudinary, create one [here](https://cl
 
 ## Testing
 
+Please see [Testing](TESTING.md)
+
 ## Credits
+
+"This website uses [TMDB](https://www.themoviedb.org/) and the TMDB APIs but is not endorsed, certified, or otherwise approved by TMDB."
 
 ### Code Used
 
+[Code Institute's](https://codeinstitute.net/) - Walkthrough project I Think Therefore I Blog
+
+[Youtube Tutorial](https://www.youtube.com/watch?v=tm9Yps3IkmQ&list=PLBQzvdjNG8c-g_mVYUNiVDwwO5YgcbNwT&index=1) - To fetch data from the TMDB API.
+
+[dev](https://dev.to/ieeecsvitc/integrating-rich-text-editor-with-django-k19) - Integrating Rich Text Editor with Django
+
+[codepen](https://codepen.io/GeoffreyCrofte/pen/ALOggg) - To display stars to give rating.
+
+[codepen](https://codepen.io/Bluetidepro/pen/AGXMMp) - To display movie rating with stars.
+
+[Stack overflow](https://stackoverflow.com/questions/59593884/django-rendering-a-number-as-a-5-stars-rating) - Star rating
+
+[Youtube Tutorial by Pyplane](https://www.youtube.com/watch?v=iz1GB_q5txM) - To get user rating choice and send data to the server
+
+[mailtrap](https://mailtrap.io/blog/django-contact-form/) - To create contact form and connect it with the database and send email to admin.
+
+[Stack Overflow](https://stackoverflow.com/questions/39088813/django-paginator-with-many-pages) - To display set of pages in pagination
+
+[Stack Overflow](https://stackoverflow.com/) and [Django Documentation](https://docs.djangoproject.com/en/4.2/) were consulted during the whole project for various issues I faced, both front end and back end
+
 ### Media
+
+[No image available](https://commons.wikimedia.org/wiki/File:No-Image-Placeholder.svg) - To use it as a placeholder when movie doesn't contain poster
 
 ### Aknowledgments
