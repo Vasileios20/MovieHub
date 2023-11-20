@@ -16,18 +16,18 @@ Favourites
           <h5 class="card-title">{{ fav.title }}</h5>
 
           <a href="/movie_details/{{ fav.movie_obj }}/" class="btn btn-outline-primary mt-3">View details</a>
-          <a type="button" class="btn btn-outline-danger mt-3" data-toggle="modal"
+          <a href="" class="btn btn-outline-danger mt-3" data-toggle="modal"
             data-target="#deleteModal{{fav.movie_obj}}">Remove from favourites</a>
         </div>
       </div>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="deleteModal{{fav.movie_obj}}" tabindex="-1" role="dialog"
-      aria-labelledby="deleteModalLabel" aria-hidden="true">
+      aria-labelledby="deleteModalLabel{{fav.movie_obj}}" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Remove movie</h5>
+            <h5 class="modal-title" id="deleteModalLabel{{fav.movie_obj}}">Remove movie</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -37,7 +37,7 @@ Favourites
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Go back</button>
-            <a id="deleteConfirm" href="{% url 'remove_favourite' fav.movie_obj %}"
+            <a id="deleteConfirm{{fav.movie_obj}}" href="{% url 'remove_favourite' fav.movie_obj %}"
               class="btn btn-outline-danger">Remove</a>
           </div>
         </div>
