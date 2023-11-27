@@ -30,7 +30,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['moviehub-vas-2ed6679610a9.herokuapp.com', '8000-vasileios20-moviehub-08xhpqtm91d.ws-eu106.gitpod.io', 'localhost', '127.0.0.1']
 
@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "about",
     "contact",
     "comments",
+    "favourites",
 ]
 
 SITE_ID = 1

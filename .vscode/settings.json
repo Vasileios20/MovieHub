@@ -1,6 +1,30 @@
 {
     "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "python.formatting.provider": "none"
+    "remote.SSH.defaultExtensions": [
+        "gitpod.gitpod-remote-ssh"
+    ],
+    "remote.SSH.remotePlatform": {
+        "vasileios20-loverunning-3k3n54chiub.ssh.ws-eu89b.gitpod.io": "linux",
+        "vasileios20-myfirstrepo-9t7vjfjhkwb.ssh.ws-eu89b.gitpod.io": "linux",
+        "vasileios20-myfulltempl-8aum2rrvorl.ssh.ws-eu89b.gitpod.io": "linux"
+    },
+    "[javascript]": {
+        "editor.maxTokenizationLineLength": 2500
+    },
+    "workbench.colorCustomizations": {
+    
+
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "git.openRepositoryInParentFolders": "always",
+    "terminal.integrated.automationProfile.linux": {
+    },
+    "terminal.integrated.scrollback": 10000,
+    "terminal.integrated.shellIntegration.history": 500,
+    "workbench.colorTheme": "Default Dark+"
 }

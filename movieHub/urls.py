@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('comments/', include('comments.urls')),
+    path('favourites/', include('favourites.urls')),
 ]
 
 handler403 = 'movieHub.views.handler403'
