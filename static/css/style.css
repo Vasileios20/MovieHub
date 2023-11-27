@@ -230,6 +230,7 @@ body {
 
     .rate-form {
         padding-left: 1.5rem;
+        padding-right: 0;
     }
 
     .star-ratings-css-pos {
@@ -237,6 +238,10 @@ body {
         justify-content: start;
         align-items: start;
         margin-right: 50rem;
+        margin-top: 2rem;
+    }
+
+    .sm-scr {
         margin-top: 2rem;
     }
 
