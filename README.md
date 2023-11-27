@@ -20,7 +20,7 @@ This website uses [TMDB](https://www.themoviedb.org/) and the TMDB APIs but is n
 * [User Experience (UX)](#user-experience-ux)
   * [Agile methodology](#agile-methodology)
   * [User Stories](#user-stories)
-* [Database Diagram]
+* [Database Diagram](#database-diagram)
 * [Features](#features)
   * [Navigation Bar](#navigation-bar)
   * [Home Page](#home-page)
@@ -211,6 +211,8 @@ The [Results Page](/documentation/features/results.png) contains a list of the m
 The [Movie Page](/documentation/features/movie.png) contains the following details: poster, title, overview, release date, cast, genres, homeapage, production companies, production countries, spoken languages, original lanaguage, original title, budget, revenue and the runtime. It also displays the rating average(if rated).
 
 The registered user [Movie Page](/documentation/features/add-rating.png) contains also the give rating stars and the add favourites button.
+
+If the registered user give rating to a [Movie](/documentation/features/rated.png) it displays user's rating.
 
 ### Comment Page
 
