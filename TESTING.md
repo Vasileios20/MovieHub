@@ -25,7 +25,7 @@
 
 [Logout](documentation/testing/html-vld/logout-html-vld.png)
 
-[Sign up]()
+[Sign up](documentation/testing/html-vld/signup-html-vld.png)
 
 [Movie](documentation/testing/html-vld/movie-html-vld.png)
 
@@ -57,10 +57,13 @@
 
 |App/File|views.py|urls.py|models.py|admin.py|forms.py|movie_details.py|
 |--|--|--|--|--|--|--|
-|movieHub|[PASS](documentation/testing/pep8/mh-views.png)|[PASS](documentation/testing/pep8/mh-urls.png)|n/a|n/a|n/a|n/a|
-|home|[PASS](documentation/testing/pep8/home-views.png)|[PASS](documentation/testing/pep8/home-urls.png)|[PASS](documentation/testing/pep8/home-models.png)|[PASS](documentation/testing/pep8/home-admin.png)|[PASS](documentation/testing/pep8/home-forms.png)|[PASS](documentation/testing/pep8/home-movie-details.png)|
-|about|[PASS](documentation/testing/pep8/about-views.png)|[PASS](documentation/testing/pep8/about-urls.png)|n/a|n/a|n/a|n/a|
-|contact|[PASS](documentation/testing/pep8/contact-views.png)|[PASS](documentation/testing/pep8/contact-urls.png)|[PASS](documentation/testing/pep8/contact-models.png)|[PASS](documentation/testing/pep8/contact-admin.png)|[PASS](documentation/testing/pep8/contact-forms.png)|n/a|
+|movieHub|[PASS](documentation/testing/pep8/mh-views.png)|[PASS](documentation/testing/pep8/mh-urls.png)|N/A|N/A|N/A|N/A|
+|home|[PASS](documentation/testing/pep8/home-views.png)|[PASS](documentation/testing/pep8/home-urls.png)|[PASS](documentation/testing/pep8/home-models.png)|[PASS](documentation/testing/pep8/home-admin.png)|N/A|[PASS](documentation/testing/pep8/home-movie-details.png)|
+|about|[PASS](documentation/testing/pep8/about-views.png)|[PASS](documentation/testing/pep8/about-urls.png)|N/A|N/A|N/A|N/A|
+|contact|[PASS](documentation/testing/pep8/contact-views.png)|[PASS](documentation/testing/pep8/contact-urls.png)|[PASS](documentation/testing/pep8/contact-models.png)|[PASS](documentation/testing/pep8/contact-admin.png)|[PASS](documentation/testing/pep8/contact-forms.png)|N/A|
+|comments|[PASS](documentation/testing/pep8/comments-views.png)|[PASS](documentation/testing/pep8/comments-urls.png)|[PASS](documentation/testing/pep8/comments-models.png)|[PASS](documentation/testing/pep8/comments-admin.png)|[PASS](documentation/testing/pep8/comments-forms.png)|N/A|
+|favourites|[PASS](documentation/testing/pep8/fav-views.png)|[PASS](documentation/testing/pep8/fav-urls.png)|[PASS](documentation/testing/pep8/fav-models.png)|[PASS](documentation/testing/pep8/fav-admin.png)|N/A|N/A|
+|ratings|[PASS](documentation/testing/pep8/ratings-views.png)|[PASS](documentation/testing/pep8/ratings-urls.png)|[PASS](documentation/testing/pep8/ratings-models.png)|[PASS](documentation/testing/pep8/ratings-admin.png)|N/A|N/A|
 
 ## Lighthouse
 
@@ -116,7 +119,7 @@
 |Contact us button|Redirect to contact page|Clicked button|Redirected to contact page| :heavy_check_mark: |
 |Top 15 Movies button|Redirect to ratings page|Clicked button|Redirected to ratings page| :heavy_check_mark: |
 |Search form|Redirect to results page of query entered|Entered a query and clicked search button|Redirected to results page and query results displayed| :heavy_check_mark: |
-||If empty return redirect or http response??|
+|empty search form|Redirect to home page and display message|Added whitespaces and submitted form|Redirected to home page and message displayed| :heavy_check_mark: |
 |Navbar(Site User)|
 |Sign up us button|Redirect to signup page|Clicked button|Redirected to signup page| :heavy_check_mark: |
 |Login button|Redirect to login page|Clicked button|Redirected to login page| :heavy_check_mark: |
@@ -209,12 +212,11 @@
 
 |#|Bug|Fix|
 |--|--|--|
-|1|Admin site won't show properly in deployed site.|Installed Whitenoise|
-|2|Displaying all the movies in the favourites list from all users|Filter object by user|
+|1|Displaying all the movies in the favourites list from all users|Filter object by user|
 
 ||||
 |--|--|--|
-|3|Movies were stored and in the Comment model by title instead of movie_id|Update def in Movie model to return
+|2|Movies were stored and in the Comment model by title instead of movie_id|Update def in Movie model to return
 
 ```python
 Class Movie(models.Model):
@@ -225,7 +227,7 @@ Class Movie(models.Model):
 
 ||||
 |--|--|--|
-|4|I couldn't retrieve the data from Movie model to function movie_model()|Instead of getting Movie.objects.all() changed it to Movie.objects.filter(movie_id=movie_id).values() and remove if statement inside the for loop|
+|3|I couldn't retrieve the data from Movie model to function movie_model()|Instead of getting Movie.objects.all() changed it to Movie.objects.filter(movie_id=movie_id).values() and remove if statement inside the for loop|
 
 ```python
 def movie_model(movie_id):
@@ -235,7 +237,7 @@ def movie_model(movie_id):
 
 ||||
 |--|--|--|
-|5|When I created the Movie model to save the movies that a user would first visit it wouldn't load the page. There was an error with the url for comments and favourites buttons, as both was setup to save in the database with the ID from a Movie object|In the function movie_details once I saved the first time visited movie in my database, I  updated the data dictionarywith the movie_id from the Movie model.|
+|4|When I created the Movie model to save the movies that a user would first visit it wouldn't load the page. There was an error with the url for comments and favourites buttons, as both was setup to save in the database with the ID from a Movie object|In the function movie_details once I saved the first time visited movie in my database, I  updated the data dictionary with the movie_id from the Movie model.|
 
 ```python
 def movie_details(request, movie_id):
