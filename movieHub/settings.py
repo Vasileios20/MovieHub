@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['moviehub-vas-2ed6679610a9.herokuapp.com', '8000-vasileios20-moviehub-csrkk8te903.ws-eu106.gitpod.io', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['moviehub-vas-2ed6679610a9.herokuapp.com', '8000-vasileios20-moviehub-08xhpqtm91d.ws-eu106.gitpod.io', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "home",
     "about",
     "contact",
+    "comments",
 ]
 
 SITE_ID = 1
@@ -79,7 +80,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 APPEND_SLASH = False
 
-CSRF_TRUSTED_ORIGINS = ['https://moviehub-vas-2ed6679610a9.herokuapp.com/']
+CSRF_TRUSTED_ORIGINS = ['https://moviehub-vas-2ed6679610a9.herokuapp.com/', 'https://8000-vasileios20-moviehub-08xhpqtm91d.ws-eu106.gitpod.io']
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
