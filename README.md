@@ -442,3 +442,9 @@ Please see [Testing](TESTING.md)
 [No image available](https://commons.wikimedia.org/wiki/File:No-Image-Placeholder.svg) - To use it as a placeholder when movie doesn't contain poster
 
 ### Aknowledgments
+
+My mentor Brian Macharia for guidance, support and feedback during the project.
+
+[Kera Cudmore](https://github.com/kera-cudmore) for feedback and support during the project. Also for providing an excellent guide how to write the README.
+
+And the tutors from Code Institute that helped me overcome the issues that I faced with the project.
