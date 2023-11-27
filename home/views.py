@@ -22,7 +22,9 @@ def get_movie_detail(request, movie_id):
     return: movie object
     """
     # Get the movie details from the API and save them to the database
-    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
+    url = (
+        f"https://api.themoviedb.org/3/movie/{movie_id}?api_key={TMDB_API_KEY}"
+    )
     response = requests.get(url)
     data = response.json()
     movie = Movie(
@@ -143,7 +145,8 @@ def movie_details(request, movie_id):
     # Check if the movie is in the database
     if not movie.exists():
         url = (
-            f"https://api.themoviedb.org/3/movie/{movie_id}?" f"api_key={TMDB_API_KEY}"
+            f"https://api.themoviedb.org/3/movie/{movie_id}?"
+            f"api_key={TMDB_API_KEY}"
         )
         response = requests.get(url)
         data = response.json()
