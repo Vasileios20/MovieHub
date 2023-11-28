@@ -7,6 +7,7 @@
 * [Lighthouse](#lighthouse)
 * [User Stories](#user-stories)
 * [Manual Testing](#manual-testing)
+* [Automated Testing](#automated-testing)
 * [Bugs](#bugs)
 
 ## HTML
@@ -205,6 +206,10 @@
 |Contact us button|Redirect to contact page|Clicked Contact Us button|Redirected to contact page| :heavy_check_mark: |
 ||
 |Scroll to top button|Scroll to top of the screen|Clicked button| :heavy_check_mark: |
+
+## Automated Testing
+
+[Automated Testing](documentation/testing/automated-test/automated-test.png)
 
 ## Bugs
 
